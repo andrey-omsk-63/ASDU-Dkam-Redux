@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { connect } from 'react-redux';
+
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -32,6 +34,13 @@ let dateRpu: DateRPU;
 
 let massFaza: Array<Array<number>> = [[]];
 let flagMassFaza = true;
+
+function mapStateToProps(state: any) {
+  const { likesReducer } = state;
+  return {
+    likes: likesReducer.likes,
+  };
+}
 
 const BindDirections = () => {
   dateRpu = dateRpuGl;
@@ -846,4 +855,5 @@ const BindDirections = () => {
   );
 };
 
-export default BindDirections;
+export default connect(mapStateToProps)(BindDirections);
+//export default BindDirections;
