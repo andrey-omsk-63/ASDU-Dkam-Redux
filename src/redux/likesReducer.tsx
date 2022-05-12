@@ -9,15 +9,13 @@ const intialState = {
 };
 
 export const likesReducer = (state = intialState, action: any) => {
-  console.log('likesReducer > ', action);
-
   switch (action.type) {
     case INCREMENT:
       console.log('likesReducer-action - добавил');
       return {
         ...state,
         //likes: state.likes + 1,
-       };
+      };
     case DECREMENT:
       console.log('likesReducer-action - убрал');
       return {
@@ -29,4 +27,3 @@ export const likesReducer = (state = intialState, action: any) => {
       return state;
   }
 };
-

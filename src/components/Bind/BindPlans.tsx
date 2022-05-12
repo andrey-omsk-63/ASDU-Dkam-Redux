@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { inputText } from './../../redux/actions';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,7 +15,17 @@ import BindRight from './BindComponents/BindRight';
 
 //let flagInput = false;
 
-const BindPlans = () => {
+const BindPlans = (props: any) => {
+  console.log('BindPlans - props:', props);
+
+  const text = useSelector((state) => {
+    console.log('state >>> ', state);
+    //const { inputReducer } = state;
+    //return inputReducer.text;
+  });
+
+  const dispatch = useDispatch();
+
   const [size, setSize] = React.useState(0);
   let formSett = ['План 0(РП)', 0];
 
@@ -166,7 +178,8 @@ const BindPlans = () => {
     const handleChange = (event: any) => {
       setValuen(event.target.value);
       formSett[nom] = event.target.value;
-      //flagInput = true;
+      //console.log('handle text >>', event.target.value);
+      dispatch(inputText(event.target.value));
     };
 
     const handleKey = (event: any) => {

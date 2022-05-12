@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { incrementLikes, decrementLikes } from './../../redux/actions';
 
-
 import { connect } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -38,24 +37,24 @@ let massFaza: Array<Array<number>> = [[]];
 let flagMassFaza = true;
 
 function mapStateToProps(state: any) {
-  console.log('mapStateToProps:', state)
+  //console.log('mapStateToProps:', state)
   const { likesReducer } = state;
-  
+
   return {
-    likes: likesReducer.likes
+    likes: likesReducer.likes,
   };
 }
 
 function mapDispatchToProps(dispatch: any) {
   return {
     onIncrementLikes: () => {
-      console.log('click-Increment')
+      //console.log('click-Increment')
       //const action = { type: 'INCREMENT'}
       //dispatch(action)
       return dispatch(incrementLikes());
     },
     onDecrementLikes: () => {
-      console.log('click-Decrement')
+      //console.log('click-Decrement')
       // const action = { type: 'DECREMENT'}
       // dispatch(action)
       return dispatch(decrementLikes());
@@ -64,9 +63,8 @@ function mapDispatchToProps(dispatch: any) {
 }
 
 //const BindDirections = (props: { store: any }) => {
-  const BindDirections = (props: any) => {
-
-  console.log('BindDirections - store:', props)
+const BindDirections = (props: any) => {
+  console.log('BindDirections - store:', props);
 
   dateRpu = dateRpuGl;
   let kolFaz = dateRpu.timetophases.length;
@@ -90,7 +88,6 @@ function mapDispatchToProps(dispatch: any) {
     flagMassFaza = false;
     console.log('massFaza:', massFaza);
   }
-
 
   let styleSetWidth = 650;
   if (sizeGl > 770) styleSetWidth = sizeGl - 50;
@@ -492,11 +489,17 @@ function mapDispatchToProps(dispatch: any) {
                   Вы уверены в этом?
                 </Typography>
                 <Stack direction="row">
-                  <Button sx={styleButtDirect} variant="contained" onClick={() => HandleCloseDel(1)}>
+                  <Button
+                    sx={styleButtDirect}
+                    variant="contained"
+                    onClick={() => HandleCloseDel(1)}>
                     Да
                   </Button>
                   <Grid item xs></Grid>
-                  <Button sx={styleButtDirect} variant="contained" onClick={() => HandleCloseDel(2)}>
+                  <Button
+                    sx={styleButtDirect}
+                    variant="contained"
+                    onClick={() => HandleCloseDel(2)}>
                     Нет
                   </Button>
                 </Stack>
@@ -561,7 +564,6 @@ function mapDispatchToProps(dispatch: any) {
     let resStr: any = [];
     xsss = xss;
 
-
     if (kolFaz > 0) {
       resStr.push(
         <Grid item key={Math.random()} xs={0.75} sx={styleXTG030}>
@@ -612,10 +614,10 @@ function mapDispatchToProps(dispatch: any) {
   const handleClickBattomTab = (i: number, j: number) => {
     if (massFaza[i][j] === 0) {
       massFaza[i][j] = j + 1;
-      props.onIncrementLikes()
+      props.onIncrementLikes();
     } else {
       massFaza[i][j] = 0;
-      props.onDecrementLikes()
+      props.onDecrementLikes();
     }
     setSize(window.innerWidth + Math.random());
   };
@@ -740,11 +742,17 @@ function mapDispatchToProps(dispatch: any) {
                   Вы уверены в этом?
                 </Typography>
                 <Stack direction="row">
-                  <Button sx={styleButtDirect} variant="contained" onClick={() => HandleCloseDel(1)}>
+                  <Button
+                    sx={styleButtDirect}
+                    variant="contained"
+                    onClick={() => HandleCloseDel(1)}>
                     Да
                   </Button>
                   <Grid item xs></Grid>
-                  <Button sx={styleButtDirect} variant="contained" onClick={() => HandleCloseDel(2)}>
+                  <Button
+                    sx={styleButtDirect}
+                    variant="contained"
+                    onClick={() => HandleCloseDel(2)}>
                     Нет
                   </Button>
                 </Stack>

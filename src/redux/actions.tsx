@@ -1,7 +1,7 @@
 import {
   INCREMENT,
   DECREMENT,
-  // INPUT_TEXT,
+  INPUT_TEXT,
   // COMMENT_CREATE,
   // COMMENT_UPDATE,
   // COMMENT_DELETE,
@@ -24,12 +24,12 @@ export function decrementLikes() {
   };
 }
 
-// export function inputText(text) {
-//   return {
-//     type: INPUT_TEXT,
-//     text,
-//   };
-// }
+export function inputText(text: string) {
+  return {
+    type: INPUT_TEXT,
+    text,
+  };
+}
 
 // export function commentCreate(text, id) {
 //   return {
@@ -101,4 +101,3 @@ export function decrementLikes() {
 //     }
 //   };
 // }
-
