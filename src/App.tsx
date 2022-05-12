@@ -19,6 +19,8 @@ import BindPlans from './components/Bind/BindPlans';
 import BindDiagram from './components/Bind/BindDiagram';
 import Journal from './components/Journal/Journal';
 
+//import store from './redux/store';
+
 import { DateRPU } from './interfaceRPU.d';
 import { dataRpu } from './otladkaRpuData';
 

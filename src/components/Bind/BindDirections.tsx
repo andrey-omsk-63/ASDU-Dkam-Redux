@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { incrementLikes, decrementLikes } from './../../redux/actions';
+
 
 import { connect } from 'react-redux';
 
@@ -36,13 +38,36 @@ let massFaza: Array<Array<number>> = [[]];
 let flagMassFaza = true;
 
 function mapStateToProps(state: any) {
+  console.log('mapStateToProps:', state)
   const { likesReducer } = state;
+  
   return {
-    likes: likesReducer.likes,
+    likes: likesReducer.likes
   };
 }
 
-const BindDirections = () => {
+function mapDispatchToProps(dispatch: any) {
+  return {
+    onIncrementLikes: () => {
+      console.log('click-Increment')
+      //const action = { type: 'INCREMENT'}
+      //dispatch(action)
+      return dispatch(incrementLikes());
+    },
+    onDecrementLikes: () => {
+      console.log('click-Decrement')
+      // const action = { type: 'DECREMENT'}
+      // dispatch(action)
+      return dispatch(decrementLikes());
+    },
+  };
+}
+
+//const BindDirections = (props: { store: any }) => {
+  const BindDirections = (props: any) => {
+
+  console.log('BindDirections - store:', props)
+
   dateRpu = dateRpuGl;
   let kolFaz = dateRpu.timetophases.length;
   const [size, setSize] = React.useState(0);
@@ -587,8 +612,10 @@ const BindDirections = () => {
   const handleClickBattomTab = (i: number, j: number) => {
     if (massFaza[i][j] === 0) {
       massFaza[i][j] = j + 1;
+      props.onIncrementLikes()
     } else {
       massFaza[i][j] = 0;
+      props.onDecrementLikes()
     }
     setSize(window.innerWidth + Math.random());
   };
@@ -855,5 +882,5 @@ const BindDirections = () => {
   );
 };
 
-export default connect(mapStateToProps)(BindDirections);
+export default connect(mapStateToProps, mapDispatchToProps)(BindDirections);
 //export default BindDirections;
