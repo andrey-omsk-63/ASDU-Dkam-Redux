@@ -2,7 +2,7 @@ import {
   INCREMENT,
   DECREMENT,
   INPUT_TEXT,
-  // COMMENT_CREATE,
+  COMMENT_CREATE,
   // COMMENT_UPDATE,
   // COMMENT_DELETE,
   // COMMENTS_LOAD,
@@ -11,6 +11,8 @@ import {
   // ERROR_DISPLAY_ON,
   // ERROR_DISPLAY_OFF,
 } from './types';
+
+import { DateRPU } from './../interfaceRPU.d';
 
 export function incrementLikes() {
   return {
@@ -31,12 +33,12 @@ export function inputText(text: string) {
   };
 }
 
-// export function commentCreate(text, id) {
-//   return {
-//     type: COMMENT_CREATE,
-//     data: { text, id },
-//   };
-// }
+export function commentCreate(dateRpu: DateRPU) {
+  return {
+    type: COMMENT_CREATE,
+    data: { dateRpu },
+  };
+}
 
 // export function commentUpdate(text, id) {
 //   return {

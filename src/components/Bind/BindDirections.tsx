@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { incrementLikes, decrementLikes } from './../../redux/actions';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { connect } from 'react-redux';
+import { incrementLikes, decrementLikes } from './../../redux/actions';
+import { commentCreate } from './../../redux/actions';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,11 +14,12 @@ import TabPanel from '@mui/lab/TabPanel';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import BindRight from './BindComponents/BindRight';
+import uniqid from 'uniqid';
+
 import { styleBox, styleButtBox, styleXTG01 } from './BindComponents/BindDirectionsStyle';
 import { styleXTG011, styleXTG02, styleXTG021 } from './BindComponents/BindDirectionsStyle';
 import { styleXTG03, styleXTG0341, styleXTG0342 } from './BindComponents/BindDirectionsStyle';
@@ -36,6 +39,7 @@ let dateRpu: DateRPU;
 let massFaza: Array<Array<number>> = [[]];
 let flagMassFaza = true;
 
+//== Piece of Redux ======================================
 function mapStateToProps(state: any) {
   //console.log('mapStateToProps:', state)
   const { likesReducer } = state;
@@ -61,10 +65,21 @@ function mapDispatchToProps(dispatch: any) {
     },
   };
 }
+//======================================================
 
-//const BindDirections = (props: { store: any }) => {
 const BindDirections = (props: any) => {
-  console.log('BindDirections - store:', props);
+  //console.log('BindDirections - store:', props);
+
+  //== Piece of Redux ======================================
+  const [dateRpuRedux, setDateRpuRedux] = React.useState(dateRpuGl);
+  const comments = useSelector((state: any) => {
+    //console.log('redax state:', state);
+    const { commentsReducer } = state;
+    return commentsReducer.comments;
+  });
+  //console.log('comments:', comments);
+  const dispatch = useDispatch();
+  //======================================================
 
   dateRpu = dateRpuGl;
   let kolFaz = dateRpu.timetophases.length;
@@ -86,7 +101,7 @@ const BindDirections = (props: any) => {
       }
     }
     flagMassFaza = false;
-    console.log('massFaza:', massFaza);
+    //console.log('massFaza:', massFaza);
   }
 
   let styleSetWidth = 650;
@@ -192,6 +207,10 @@ const BindDirections = (props: any) => {
       case 22:
         dateRpu.timetophases[i].tmin = chego;
     }
+    //== Piece of Redux ======================================  
+    // setDateRpuRedux(dateRpu)
+    // dispatch(commentCreate(dateRpuRedux));
+    //dispatch(commentCreate(dateRpu));
   };
 
   const InputTopTab = (kuda: number, styleXX: any, i: number, numCol: number) => {
@@ -381,7 +400,9 @@ const BindDirections = (props: any) => {
             <Grid item xs sx={{ marginRight: 1, marginTop: -3, fontSize: 16 }}>
               <HeaderTopTab />
               <Box sx={{ overflowX: 'auto', height: '69vh' }}>
-                {open ? <Loader /> : <>{MassTopTab('Modal')}</>}
+                {open ? <Loader /> : <>
+                  {MassTopTab('Modal')}
+                </>}
               </Box>
             </Grid>
           </Grid>
@@ -611,6 +632,7 @@ const BindDirections = (props: any) => {
     border: 0,
   };
 
+  //== Piece of Redux ======================================
   const handleClickBattomTab = (i: number, j: number) => {
     if (massFaza[i][j] === 0) {
       massFaza[i][j] = j + 1;
@@ -621,6 +643,7 @@ const BindDirections = (props: any) => {
     }
     setSize(window.innerWidth + Math.random());
   };
+  //==========================================================
 
   const StrokaBattomTab = (mode: string) => {
     resStrBattomTab = [];

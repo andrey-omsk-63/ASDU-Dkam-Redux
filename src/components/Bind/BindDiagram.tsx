@@ -3,7 +3,9 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 
-const BindDiagram = () => {
+const BindDiagram = (props: any) => {
+  console.log('BindDiagram - props:', props);
+
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);

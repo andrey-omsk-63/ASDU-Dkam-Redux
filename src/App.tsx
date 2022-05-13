@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -25,12 +26,21 @@ import { DateRPU } from './interfaceRPU.d';
 import { dataRpu } from './otladkaRpuData';
 
 import IconAsdu from './IconAsdu';
-//import { dateRpu,  } from './AppStorege';
 
 export let dateRpuGl: DateRPU = {} as DateRPU;
 let flagOpenRpu = true;
 
 const App = () => {
+  //== Piece of Redux ======================================
+  const [dateRpuRedux, setDateRpuRedux] = React.useState(dateRpuGl);
+  const comments = useSelector((state: any) => {
+    const { commentsReducer } = state;
+    return commentsReducer.comments;
+  });
+  console.log('comments_App:', comments);
+  const dispatch = useDispatch();
+  //======================================================
+
   const styleAppMenu = {
     border: 0,
     borderRadius: 1,
@@ -48,7 +58,7 @@ const App = () => {
     marginRight: 0.5,
     marginLeft: 0.5,
     height: '5vh',
-   };
+  };
 
   const styleButt01 = {
     fontSize: 19,
@@ -140,13 +150,8 @@ const App = () => {
 
   const [value, setValue] = React.useState('1');
 
-  //let heightAv = window.screen.availHeight;       //получение доступного размера экрана
-  //let heightGl = window.innerHeight.toString() + 'px';
-  let heightGl = '100vh';
-
   return (
-    // <Grid container sx={{ border: 2, height: '92vh' }}>
-    <Grid container sx={{ height: heightGl }}>
+    <Grid container sx={{ height: '100vh' }}>
       <Grid container sx={{ marginRight: 0.5 }}>
         <TabContext value={value}>
           <Grid item xs={2.6} sx={styleAppMenu}>
