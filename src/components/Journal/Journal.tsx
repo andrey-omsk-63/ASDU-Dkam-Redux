@@ -26,7 +26,6 @@ const Journal = () => {
     backgroundAttachment: 'fixed',
     marginLeft: -2.9,
     marginRight: -3,
-    //height: '85.6vh',
     height: '87.5vh',
   };
 

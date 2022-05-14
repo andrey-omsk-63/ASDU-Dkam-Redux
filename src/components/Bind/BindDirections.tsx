@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { connect } from 'react-redux';
-import { incrementLikes, decrementLikes } from './../../redux/actions';
-import { commentCreate } from './../../redux/actions';
+//import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+//import { connect } from 'react-redux';
+//import { incrementLikes, decrementLikes } from './../../redux/actions';
+//import { massfazCreate } from './../../redux/actions';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -18,7 +19,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import BindRight from './BindComponents/BindRight';
-import uniqid from 'uniqid';
+//import uniqid from 'uniqid';
 
 import { styleBox, styleButtBox, styleXTG01 } from './BindComponents/BindDirectionsStyle';
 import { styleXTG011, styleXTG02, styleXTG021 } from './BindComponents/BindDirectionsStyle';
@@ -32,78 +33,62 @@ import { stylePlusMinus, styleSetDirect } from './BindComponents/BindDirectionsS
 import { styleButtDirect, styleModalEndDir } from './BindComponents/BindDirectionsStyle';
 
 import { DateRPU } from './../../interfaceRPU.d';
-import { dateRpuGl } from './../../App';
+//import { dateRpuGl } from './../../App';
 
 let dateRpu: DateRPU;
 
 let massFaza: Array<Array<number>> = [[]];
-let flagMassFaza = true;
 
 //== Piece of Redux ======================================
-function mapStateToProps(state: any) {
-  //console.log('mapStateToProps:', state)
-  const { likesReducer } = state;
+// function mapStateToProps(state: any) {
+//   //console.log('mapStateToProps:', state)
+//   const { likesReducer } = state;
 
-  return {
-    likes: likesReducer.likes,
-  };
-}
+//   return {
+//     likes: likesReducer.likes,
+//   };
+// }
 
-function mapDispatchToProps(dispatch: any) {
-  return {
-    onIncrementLikes: () => {
-      //console.log('click-Increment')
-      //const action = { type: 'INCREMENT'}
-      //dispatch(action)
-      return dispatch(incrementLikes());
-    },
-    onDecrementLikes: () => {
-      //console.log('click-Decrement')
-      // const action = { type: 'DECREMENT'}
-      // dispatch(action)
-      return dispatch(decrementLikes());
-    },
-  };
-}
+// function mapDispatchToProps(dispatch: any) {
+//   return {
+//     onIncrementLikes: () => {
+//       //console.log('click-Increment')
+//       //const action = { type: 'INCREMENT'}
+//       //dispatch(action)
+//       return dispatch(incrementLikes());
+//     },
+//     onDecrementLikes: () => {
+//       //console.log('click-Decrement')
+//       // const action = { type: 'DECREMENT'}
+//       // dispatch(action)
+//       return dispatch(decrementLikes());
+//     },
+//   };
+// }
 //======================================================
 
 const BindDirections = (props: any) => {
-  //console.log('BindDirections - store:', props);
-
   //== Piece of Redux ======================================
-  const [dateRpuRedux, setDateRpuRedux] = React.useState(dateRpuGl);
-  const comments = useSelector((state: any) => {
-    //console.log('redax state:', state);
-    const { commentsReducer } = state;
-    return commentsReducer.comments;
+  const comm = useSelector((state: any) => {
+    const { commReducer } = state;
+    return commReducer.comm;
   });
-  //console.log('comments:', comments);
-  const dispatch = useDispatch();
+
+  const massfaz = useSelector((state: any) => {
+    const { massfazReducer } = state;
+    return massfazReducer.massfaz;
+  });
+  //console.log('massfazDirect:', massfaz);
+
+  //const dispatch = useDispatch();
+  dateRpu = comm.dateRpu;
+  massFaza = massfaz;
   //======================================================
 
-  dateRpu = dateRpuGl;
   let kolFaz = dateRpu.timetophases.length;
   const [size, setSize] = React.useState(0);
+
   let sizeGl = window.innerWidth;
-
-  // инициализация massFaza
-  if (flagMassFaza) {
-    massFaza = Array.from({ length: kolFaz }, () =>
-      Array.from({ length: dateRpu.tirtonap.length }, () => 0),
-    );
-    // i - столбец
-    for (let i = 0; i < kolFaz; i++) {
-      // j - строка
-      for (let j = 0; j < dateRpu.tirtonap.length; j++) {
-        if (dateRpu.naptoph[i].naps.includes(j + 1)) {
-          massFaza[i][j] = j + 1;
-        }
-      }
-    }
-    flagMassFaza = false;
-    //console.log('massFaza:', massFaza);
-  }
-
   let styleSetWidth = 650;
   if (sizeGl > 770) styleSetWidth = sizeGl - 50;
   let fSize = ((sizeGl - 700) * 3.5) / 450 + 10.5;
@@ -207,10 +192,6 @@ const BindDirections = (props: any) => {
       case 22:
         dateRpu.timetophases[i].tmin = chego;
     }
-    //== Piece of Redux ======================================  
-    // setDateRpuRedux(dateRpu)
-    // dispatch(commentCreate(dateRpuRedux));
-    //dispatch(commentCreate(dateRpu));
   };
 
   const InputTopTab = (kuda: number, styleXX: any, i: number, numCol: number) => {
@@ -234,6 +215,7 @@ const BindDirections = (props: any) => {
       if (valueInp > maxi) valueInp = maxi;
       if (valueInp < 0) valueInp = 0;
       if (event.target.value === '') valueInp = 0;
+      valueInp = Number(valueInp);
       setValuen(valueInp);
       RecordInDateRpu(i, numCol, valueInp);
     };
@@ -400,9 +382,7 @@ const BindDirections = (props: any) => {
             <Grid item xs sx={{ marginRight: 1, marginTop: -3, fontSize: 16 }}>
               <HeaderTopTab />
               <Box sx={{ overflowX: 'auto', height: '69vh' }}>
-                {open ? <Loader /> : <>
-                  {MassTopTab('Modal')}
-                </>}
+                {open ? <Loader /> : <>{MassTopTab('Modal')}</>}
               </Box>
             </Grid>
           </Grid>
@@ -440,8 +420,6 @@ const BindDirections = (props: any) => {
       for (let i = 0; i < kolFaz; i++) {
         massFaza[i][lengthMas - 1] = 0;
       }
-      // console.log('1:', dateRpu);
-      // console.log('massFaza1:', massFaza);
       setOpenSet(false);
     };
 
@@ -636,10 +614,10 @@ const BindDirections = (props: any) => {
   const handleClickBattomTab = (i: number, j: number) => {
     if (massFaza[i][j] === 0) {
       massFaza[i][j] = j + 1;
-      props.onIncrementLikes();
+      //props.onIncrementLikes();
     } else {
       massFaza[i][j] = 0;
-      props.onDecrementLikes();
+      //props.onDecrementLikes();
     }
     setSize(window.innerWidth + Math.random());
   };
@@ -697,9 +675,9 @@ const BindDirections = (props: any) => {
 
   const OutputModalBattom = () => {
     fSizeInp = 16;
-    let fntSize = 18;
-    if (sizeGl > 1200) fntSize = 21;
-    if (sizeGl > 1500) fntSize = 27;
+    // let fntSize = 18;
+    // if (sizeGl > 1200) fntSize = 21;
+    // if (sizeGl > 1500) fntSize = 27;
 
     return (
       <Modal open={openSet} onClose={handleCloseSet}>
@@ -913,5 +891,5 @@ const BindDirections = (props: any) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BindDirections);
-//export default BindDirections;
+//export default connect(mapStateToProps, mapDispatchToProps)(BindDirections);
+export default BindDirections;

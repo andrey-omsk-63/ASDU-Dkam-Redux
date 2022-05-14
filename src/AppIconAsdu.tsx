@@ -1,6 +1,6 @@
 import React from 'react';
 
-function IconAsdu() {
+function AppIconAsdu() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="96" height="5vh" version="1" viewBox="0 0 91 54">
       <path
@@ -13,4 +13,4 @@ function IconAsdu() {
   );
 }
 
-export default IconAsdu;
+export default AppIconAsdu;

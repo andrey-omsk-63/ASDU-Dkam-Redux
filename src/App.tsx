@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { commCreate, massfazCreate } from './redux/actions';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -7,9 +8,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
-//import Modal from '@mui/material/Modal';
 
-//import axios from 'axios';
+import axios from 'axios';
 
 import Condition from './components/Condition';
 import Technology from './components/Technology';
@@ -20,73 +20,36 @@ import BindPlans from './components/Bind/BindPlans';
 import BindDiagram from './components/Bind/BindDiagram';
 import Journal from './components/Journal/Journal';
 
-//import store from './redux/store';
+import { styleAppMenu, styleAppPodv, styleButt01 } from './AppStyle';
+import { styleTitle, styleButt02 } from './AppStyle';
 
 import { DateRPU } from './interfaceRPU.d';
-import { dataRpu } from './otladkaRpuData';
+//import { dataRpu } from './otladkaRpuData';
 
-import IconAsdu from './IconAsdu';
+import AppIconAsdu from './AppIconAsdu';
 
 export let dateRpuGl: DateRPU = {} as DateRPU;
+//export let massFaz: number[][] = [[], []];
+export let massFaz: Array<Array<number>> = [[]];
+
 let flagOpenRpu = true;
 
 const App = () => {
   //== Piece of Redux ======================================
-  const [dateRpuRedux, setDateRpuRedux] = React.useState(dateRpuGl);
-  const comments = useSelector((state: any) => {
-    const { commentsReducer } = state;
-    return commentsReducer.comments;
+  const comm = useSelector((state: any) => {
+    const { commReducer } = state;
+    return commReducer.comm;
   });
-  console.log('comments_App:', comments);
+  //console.log('comm_App:', comm);
+
+  const massfaz = useSelector((state: any) => {
+    const { massfazReducer } = state;
+    return massfazReducer.massfaz;
+  });
+  //console.log('massfaz_App:', massfaz);
+
   const dispatch = useDispatch();
-  //======================================================
-
-  const styleAppMenu = {
-    border: 0,
-    borderRadius: 1,
-    borderColor: '#F1F5FB',
-    marginLeft: 0.5,
-    marginTop: 0.7,
-    height: '92vh',
-    backgroundColor: '#F1F5FB',
-    opacity: 0.88,
-    padding: 0.1,
-  };
-
-  const styleAppPodv = {
-    border: 0,
-    marginRight: 0.5,
-    marginLeft: 0.5,
-    height: '5vh',
-  };
-
-  const styleButt01 = {
-    fontSize: 19,
-    maxHeight: '33px',
-    minHeight: '33px',
-    marginTop: 4,
-    backgroundColor: '#F1F5FB',
-    color: 'black',
-    textTransform: 'unset !important',
-  };
-
-  const styleButt02 = {
-    fontSize: 16.5,
-    maxHeight: '33px',
-    minHeight: '33px',
-    marginTop: 4,
-    backgroundColor: '#F1F5FB',
-    color: '#003300',
-    textTransform: 'unset !important',
-  };
-
-  const styleTitle = {
-    fontSize: 24,
-    marginTop: 1,
-    textAlign: 'left',
-    marginLeft: 4,
-    color: '#5B1080',
-  };
+  //========================================================
 
   const ButtonKnobLevel1 = (soob: string, val: string) => {
     return (
@@ -115,38 +78,37 @@ const App = () => {
 
   const [pointsRpu, setPointsRpu] = React.useState<DateRPU>({} as DateRPU);
   const [isOpenRpu, setIsOpenRpu] = React.useState(false);
-  //const ipAdress: string = 'http://localhost:3000/otladkaRpu.json';
-  // const ipAdress: string = 'http://192.168.115.114:3000/otladkaRpu.json';
+  const ipAdress: string = 'http://localhost:3000/otladkaRpu.json';
+  //const ipAdress: string = 'http://192.168.115.114:3000/otladkaRpu.json';
 
-  // React.useEffect(() => {
-  //   axios.get(ipAdress).then(({ data }) => {
-  //     setPointsRpu(data);
-  //     setIsOpenRpu(true);
-  //   });
-  // }, []);
-
-  if (flagOpenRpu) {
-    // костыль
-    setPointsRpu(dataRpu);
-    setIsOpenRpu(true);
-  }
+  React.useEffect(() => {
+    axios.get(ipAdress).then(({ data }) => {
+      setPointsRpu(data);
+      setIsOpenRpu(true);
+    });
+  }, []);
 
   if (isOpenRpu && flagOpenRpu) {
     dateRpuGl = pointsRpu;
-    flagOpenRpu = false;
-    console.log('dateRpuGl:', dateRpuGl);
-  }
+    dispatch(commCreate(pointsRpu));
 
-  // отслеживание изменения размера экрана
-  // const [size, setSize] = React.useState([0, 0]);
-  // React.useLayoutEffect(() => {
-  //   function updateSize() {
-  //     setSize([window.innerWidth, window.innerHeight]);
-  //   }
-  //   window.addEventListener('resize', updateSize);
-  //   updateSize();
-  //   return () => window.removeEventListener('resize', updateSize);
-  // }, []);
+    // инициализация massFaza
+    let kolFaz = dateRpuGl.timetophases.length;
+    massFaz = Array.from({ length: kolFaz }, () =>
+      Array.from({ length: dateRpuGl.tirtonap.length }, () => 0),
+    );
+    // i - столбец
+    for (let i = 0; i < kolFaz; i++) {
+      // j - строка
+      for (let j = 0; j < dateRpuGl.tirtonap.length; j++) {
+        if (dateRpuGl.naptoph[i].naps.includes(j + 1)) {
+          massFaz[i][j] = j + 1;
+        }
+      }
+    }
+    dispatch(massfazCreate(massFaz));
+    flagOpenRpu = false;
+  }
 
   const [value, setValue] = React.useState('1');
 
@@ -209,7 +171,7 @@ const App = () => {
       <Grid item xs={12} sx={styleAppPodv}>
         <Grid container>
           <Grid item xs={1.7} sx={{ border: 0 }}>
-            <IconAsdu />
+            <AppIconAsdu />
           </Grid>
           <Grid item xs>
             <Box sx={{ p: 1, textAlign: 'center', fontSize: 14 }}>
@@ -223,3 +185,14 @@ const App = () => {
 };
 
 export default App;
+
+// отслеживание изменения размера экрана
+// const [size, setSize] = React.useState([0, 0]);
+// React.useLayoutEffect(() => {
+//   function updateSize() {
+//     setSize([window.innerWidth, window.innerHeight]);
+//   }
+//   window.addEventListener('resize', updateSize);
+//   updateSize();
+//   return () => window.removeEventListener('resize', updateSize);
+// }, []);

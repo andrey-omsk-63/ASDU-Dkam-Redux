@@ -28,7 +28,6 @@ const Eguipment = () => {
     borderColor: 'primary.main',
     textAlign: 'center',
     backgroundColor: '#C0C0C0',
-    //padding: '2.5vh',
     height: '4.5vh',
   };
 

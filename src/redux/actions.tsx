@@ -2,7 +2,8 @@ import {
   INCREMENT,
   DECREMENT,
   INPUT_TEXT,
-  COMMENT_CREATE,
+  COMM_CREATE,
+  MASSFAZ_CREATE,
   // COMMENT_UPDATE,
   // COMMENT_DELETE,
   // COMMENTS_LOAD,
@@ -33,10 +34,17 @@ export function inputText(text: string) {
   };
 }
 
-export function commentCreate(dateRpu: DateRPU) {
+export function commCreate(dateRpu: DateRPU) {
   return {
-    type: COMMENT_CREATE,
+    type: COMM_CREATE,
     data: { dateRpu },
+  };
+}
+
+export function massfazCreate(massFaza: Array<Array<number>> = [[]]) {
+  return {
+    type: MASSFAZ_CREATE,
+    data: massFaza,
   };
 }
 
