@@ -1,5 +1,10 @@
 import * as React from 'react';
+
+//import { useDispatch, useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
+//import { connect } from 'react-redux';
+//import { incrementLikes, decrementLikes } from './../../redux/actions';
+//import { massfazCreate } from './../../redux/actions';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,7 +19,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import BindRight from './BindComponents/BindRight';
-import uniqid from 'uniqid';
+//import uniqid from 'uniqid';
 
 import { styleBox, styleButtBox, styleXTG01 } from './BindComponents/BindDirectionsStyle';
 import { styleXTG011, styleXTG02, styleXTG021 } from './BindComponents/BindDirectionsStyle';
@@ -28,9 +33,39 @@ import { stylePlusMinus, styleSetDirect } from './BindComponents/BindDirectionsS
 import { styleButtDirect, styleModalEndDir } from './BindComponents/BindDirectionsStyle';
 
 import { DateRPU } from './../../interfaceRPU.d';
+//import { dateRpuGl } from './../../App';
 
 let dateRpu: DateRPU;
+
 let massFaza: Array<Array<number>> = [[]];
+
+//== Piece of Redux ======================================
+// function mapStateToProps(state: any) {
+//   //console.log('mapStateToProps:', state)
+//   const { likesReducer } = state;
+
+//   return {
+//     likes: likesReducer.likes,
+//   };
+// }
+
+// function mapDispatchToProps(dispatch: any) {
+//   return {
+//     onIncrementLikes: () => {
+//       //console.log('click-Increment')
+//       //const action = { type: 'INCREMENT'}
+//       //dispatch(action)
+//       return dispatch(incrementLikes());
+//     },
+//     onDecrementLikes: () => {
+//       //console.log('click-Decrement')
+//       // const action = { type: 'DECREMENT'}
+//       // dispatch(action)
+//       return dispatch(decrementLikes());
+//     },
+//   };
+// }
+//======================================================
 
 const BindDirections = (props: any) => {
   //== Piece of Redux ======================================
@@ -251,7 +286,7 @@ const BindDirections = (props: any) => {
 
   const OutputTopTab = (chego: any, styleXX: any) => {
     return (
-      <Grid xs={0.75} item key={uniqid()} sx={styleXX}>
+      <Grid xs={0.75} item key={Math.random()} sx={styleXX}>
         {chego}
       </Grid>
     );
@@ -330,9 +365,9 @@ const BindDirections = (props: any) => {
   const OutputNormalTop = () => {
     fSizeInp = fSize;
     return (
-      <Box sx={{ marginTop: -2.4, fontSize: fSize, height: '39.5vh' }}>
+      <Box sx={{ marginTop: -2.1, fontSize: fSize, height: '39.5vh' }}>
         <HeaderTopTab />
-        <Box sx={{ height: '37.9vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
+        <Box sx={{ height: '37.5vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
       </Box>
     );
   };
@@ -508,14 +543,14 @@ const BindDirections = (props: any) => {
   const HeaderBattomTab = () => {
     let resStrHeaderBattomTab = [];
     resStrHeaderBattomTab.push(
-      <Grid item key={uniqid()} xs={0.75} sx={styleXTG021}>
+      <Grid item key={Math.random()} xs={0.75} sx={styleXTG021}>
         <b>Фаза</b>
       </Grid>,
     );
     if (kolFaz > 0) {
       for (let i = 0; i < kolFaz; i++) {
         resStrHeaderBattomTab.push(
-          <Grid item key={uniqid()} xs={xss} sx={styleXTG021}>
+          <Grid item key={Math.random()} xs={xss} sx={styleXTG021}>
             <b>{i + 1}</b>
           </Grid>,
         );
@@ -530,7 +565,7 @@ const BindDirections = (props: any) => {
 
     if (kolFaz > 0) {
       resStr.push(
-        <Grid item key={uniqid()} xs={0.75} sx={styleXTG030}>
+        <Grid item key={Math.random()} xs={0.75} sx={styleXTG030}>
           {titl}
         </Grid>,
       );
@@ -575,14 +610,18 @@ const BindDirections = (props: any) => {
     border: 0,
   };
 
+  //== Piece of Redux ======================================
   const handleClickBattomTab = (i: number, j: number) => {
     if (massFaza[i][j] === 0) {
       massFaza[i][j] = j + 1;
+      //props.onIncrementLikes();
     } else {
       massFaza[i][j] = 0;
+      //props.onDecrementLikes();
     }
     setSize(window.innerWidth + Math.random());
   };
+  //==========================================================
 
   const StrokaBattomTab = (mode: string) => {
     resStrBattomTab = [];
@@ -602,10 +641,10 @@ const BindDirections = (props: any) => {
             styleXXX = styleButtBattGreen;
           }
           if (mode !== 'Modal') {
-            resStrBattomTab.push(<Grid item key={uniqid()} xs={xss} sx={styleXX}></Grid>);
+            resStrBattomTab.push(<Grid item key={Math.random()} xs={xss} sx={styleXX}></Grid>);
           } else {
             resStrBattomTab.push(
-              <Grid item key={uniqid()} xs={xss} sx={styleXX}>
+              <Grid item key={Math.random()} xs={xss} sx={styleXX}>
                 <Button sx={styleXXX} onClick={() => handleClickBattomTab(i, j)}></Button>
               </Grid>,
             );
@@ -636,11 +675,15 @@ const BindDirections = (props: any) => {
 
   const OutputModalBattom = () => {
     fSizeInp = 16;
+    // let fntSize = 18;
+    // if (sizeGl > 1200) fntSize = 21;
+    // if (sizeGl > 1500) fntSize = 27;
 
     return (
       <Modal open={openSet} onClose={handleCloseSet}>
         <Box sx={styleSet}>
           <ModalEnd />
+          {/* <Box sx={{ marginRight: 1, marginTop: -3, fontSize: fntSize }}> */}
           <Box sx={{ marginRight: 1, marginTop: -3 }}>
             <Grid item container xs={12}>
               {HeaderBattomTab()}
@@ -848,4 +891,5 @@ const BindDirections = (props: any) => {
   );
 };
 
+//export default connect(mapStateToProps, mapDispatchToProps)(BindDirections);
 export default BindDirections;

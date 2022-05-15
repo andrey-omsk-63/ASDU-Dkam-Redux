@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+//import { useDispatch, useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -330,9 +332,9 @@ const BindDirections = (props: any) => {
   const OutputNormalTop = () => {
     fSizeInp = fSize;
     return (
-      <Box sx={{ marginTop: -2.4, fontSize: fSize, height: '39.5vh' }}>
+      <Box sx={{ marginTop: -2.1, fontSize: fSize, height: '39.5vh' }}>
         <HeaderTopTab />
-        <Box sx={{ height: '37.9vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
+        <Box sx={{ height: '37.5vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
       </Box>
     );
   };
@@ -503,7 +505,7 @@ const BindDirections = (props: any) => {
     );
   };
 
-  //== BattomTab =======================================
+  //== BattomTab =======================================uniqid()
 
   const HeaderBattomTab = () => {
     let resStrHeaderBattomTab = [];

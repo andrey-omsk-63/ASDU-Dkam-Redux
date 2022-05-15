@@ -40,13 +40,13 @@ const App = () => {
     const { commReducer } = state;
     return commReducer.comm;
   });
-  //console.log('comm_App:', comm);
+  console.log('comm_App:', comm);
 
   const massfaz = useSelector((state: any) => {
     const { massfazReducer } = state;
     return massfazReducer.massfaz;
   });
-  //console.log('massfaz_App:', massfaz);
+  console.log('massfaz_App:', massfaz);
 
   const dispatch = useDispatch();
   //========================================================

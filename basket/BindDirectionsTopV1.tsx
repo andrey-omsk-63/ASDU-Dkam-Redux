@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+//import { useDispatch, useSelector } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -13,13 +15,11 @@ import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import BindRight from './BindComponents/BindRight';
-import uniqid from 'uniqid';
+//import uniqid from 'uniqid';
 
-import { styleBox, styleButtBox, styleXTG01 } from './BindComponents/BindDirectionsStyle';
-import { styleXTG011, styleXTG02, styleXTG021 } from './BindComponents/BindDirectionsStyle';
-import { styleXTG03, styleXTG0341, styleXTG0342 } from './BindComponents/BindDirectionsStyle';
-import { styleXTG030, styleXTG032, styleXTG033 } from './BindComponents/BindDirectionsStyle';
+import { styleButtBox, styleXTG01 } from './BindComponents/BindDirectionsStyle';
+import { styleXTG011, styleXTG02, styleXTG03 } from './BindComponents/BindDirectionsStyle';
+import { styleXTG032, styleXTG033 } from './BindComponents/BindDirectionsStyle';
 import { styleXTG032Norm, styleXTG033Norm } from './BindComponents/BindDirectionsStyle';
 import { styleModalEnd, styleXTG034Norm } from './BindComponents/BindDirectionsStyle';
 import { styleXTG034, styleXTG035, styleXTG036 } from './BindComponents/BindDirectionsStyle';
@@ -30,9 +30,10 @@ import { styleButtDirect, styleModalEndDir } from './BindComponents/BindDirectio
 import { DateRPU } from './../../interfaceRPU.d';
 
 let dateRpu: DateRPU;
+
 let massFaza: Array<Array<number>> = [[]];
 
-const BindDirections = (props: any) => {
+const BindDirectionsTop = (props: any) => {
   //== Piece of Redux ======================================
   const comm = useSelector((state: any) => {
     const { commReducer } = state;
@@ -51,21 +52,17 @@ const BindDirections = (props: any) => {
   //======================================================
 
   let kolFaz = dateRpu.timetophases.length;
-  const [size, setSize] = React.useState(0);
+  // const [size, setSize] = React.useState(0);
 
   let sizeGl = window.innerWidth;
   let styleSetWidth = 650;
   if (sizeGl > 770) styleSetWidth = sizeGl - 50;
   let fSize = ((sizeGl - 700) * 3.5) / 450 + 10.5;
 
-  let widthButtBatt = (sizeGl / (kolFaz + 1) - 5).toString() + 'px';
-  let heightButtBatt = '6vh';
   let fSizeInp = 10.5;
 
-  let xss = 11.25 / kolFaz;
   let xsss = 0.75;
   let napr = '';
-  let resStrBattomTab: any = [];
 
   const styleBackdrop = {
     color: '#fff',
@@ -92,15 +89,15 @@ const BindDirections = (props: any) => {
     switch (dateRpu.tirtonap[i].type) {
       case 1:
         napr = ' Тран';
-        if (size > 800) napr = ' Трансп.';
+        if (sizeGl > 800) napr = ' Трансп.';
         break;
       case 2:
         napr = ' Пеш';
-        if (size > 800) napr = ' Пешех.';
+        if (sizeGl > 800) napr = ' Пешех.';
         break;
       case 3:
         napr = ' Пов';
-        if (size > 800) napr = ' Повор.';
+        if (sizeGl > 800) napr = ' Повор.';
     }
   };
 
@@ -150,12 +147,12 @@ const BindDirections = (props: any) => {
         break;
       case 16:
         dateRpu.prom[i].gd = chego;
-        break;
-      case 21:
-        dateRpu.timetophases[i].tmax = chego;
-        break;
-      case 22:
-        dateRpu.timetophases[i].tmin = chego;
+      // break;
+      // case 21:
+      //   dateRpu.timetophases[i].tmax = chego;
+      //   break;
+      // case 22:
+      //   dateRpu.timetophases[i].tmin = chego;
     }
   };
 
@@ -251,7 +248,7 @@ const BindDirections = (props: any) => {
 
   const OutputTopTab = (chego: any, styleXX: any) => {
     return (
-      <Grid xs={0.75} item key={uniqid()} sx={styleXX}>
+      <Grid xs={0.75} item key={Math.random()} sx={styleXX}>
         {chego}
       </Grid>
     );
@@ -332,7 +329,7 @@ const BindDirections = (props: any) => {
     return (
       <Box sx={{ marginTop: -2.4, fontSize: fSize, height: '39.5vh' }}>
         <HeaderTopTab />
-        <Box sx={{ height: '37.9vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
+        <Box sx={{ height: '38vh', overflowX: 'auto' }}>{MassTopTab('Normal')}</Box>
       </Box>
     );
   };
@@ -386,6 +383,7 @@ const BindDirections = (props: any) => {
         massFaza[i][lengthMas - 1] = 0;
       }
       setOpenSet(false);
+      setSize(window.innerWidth + Math.random());
     };
 
     const ButtonKnob = (soob: string, val: number) => {
@@ -436,6 +434,7 @@ const BindDirections = (props: any) => {
         }
       }
       setOpenSet(false);
+      setSize(window.innerWidth + Math.random());
     };
 
     return (
@@ -475,279 +474,6 @@ const BindDirections = (props: any) => {
     );
   };
 
-  const TopTab = () => {
-    return (
-      <TabContext value={valueTC}>
-        <Box sx={{ border: 0 }}>
-          <Button sx={styleButtBox} variant="contained" onClick={() => handleOpenModal('33')}>
-            <b>Привязка выходов</b>
-          </Button>
-          <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('34')}>
-            <b>+</b>
-          </Button>
-          <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('35')}>
-            <b>-</b>
-          </Button>
-          <OutputNormalTop />
-          <TabPanel value="33">
-            <OutputModalTop />
-          </TabPanel>
-          <TabPanel value="34">
-            <AddNormalTop />
-          </TabPanel>
-          <TabPanel value="35">
-            <DelNormalTop />
-          </TabPanel>
-        </Box>
-      </TabContext>
-    );
-  };
-
-  //== BattomTab =======================================
-
-  const HeaderBattomTab = () => {
-    let resStrHeaderBattomTab = [];
-    resStrHeaderBattomTab.push(
-      <Grid item key={uniqid()} xs={0.75} sx={styleXTG021}>
-        <b>Фаза</b>
-      </Grid>,
-    );
-    if (kolFaz > 0) {
-      for (let i = 0; i < kolFaz; i++) {
-        resStrHeaderBattomTab.push(
-          <Grid item key={uniqid()} xs={xss} sx={styleXTG021}>
-            <b>{i + 1}</b>
-          </Grid>,
-        );
-      }
-    }
-    return resStrHeaderBattomTab;
-  };
-
-  const StrokaBattomTabMaxMin = (titl: string, mode: string) => {
-    let resStr: any = [];
-    xsss = xss;
-
-    if (kolFaz > 0) {
-      resStr.push(
-        <Grid item key={uniqid()} xs={0.75} sx={styleXTG030}>
-          {titl}
-        </Grid>,
-      );
-      for (let i = 0; i < kolFaz; i++) {
-        let j = dateRpu.timetophases[i].tmax;
-        let numCol = 21;
-        if (titl.includes('min')) {
-          j = dateRpu.timetophases[i].tmin;
-          numCol = 22;
-        }
-        if (mode === 'Normal') {
-          resStr.push(
-            <Grid item key={i} xs={xss} sx={styleXTG030}>
-              {j}
-            </Grid>,
-          );
-        } else {
-          resStr.push(
-            <Grid item key={i} xs={xss} sx={styleXTG030}>
-              {InputTopTab(j, styleXTG030, i, numCol)}
-            </Grid>,
-          );
-        }
-      }
-    }
-    return resStr;
-  };
-
-  const styleButtBattRed = {
-    height: heightButtBatt,
-    maxWidth: widthButtBatt,
-    minWidth: widthButtBatt,
-    backgroundColor: '#FE929A',
-    border: 0,
-  };
-
-  const styleButtBattGreen = {
-    height: heightButtBatt,
-    maxWidth: widthButtBatt,
-    minWidth: widthButtBatt,
-    backgroundColor: '#59CB68',
-    border: 0,
-  };
-
-  const handleClickBattomTab = (i: number, j: number) => {
-    if (massFaza[i][j] === 0) {
-      massFaza[i][j] = j + 1;
-    } else {
-      massFaza[i][j] = 0;
-    }
-    setSize(window.innerWidth + Math.random());
-  };
-
-  const StrokaBattomTab = (mode: string) => {
-    resStrBattomTab = [];
-    let styleXX = styleXTG0341;
-    let styleXXX = styleButtBattGreen;
-
-    if (kolFaz > 0) {
-      for (let j = 0; j < dateRpu.tirtonap.length; j++) {
-        ReadNapravlenie(j);
-        let begin = j + 1 + napr;
-        resStrBattomTab.push(OutputTopTab(begin, styleXTG03));
-        for (let i = 0; i < kolFaz; i++) {
-          styleXX = styleXTG0341;
-          styleXXX = styleButtBattRed;
-          if (massFaza[i][j] > 0) {
-            styleXX = styleXTG0342;
-            styleXXX = styleButtBattGreen;
-          }
-          if (mode !== 'Modal') {
-            resStrBattomTab.push(<Grid item key={uniqid()} xs={xss} sx={styleXX}></Grid>);
-          } else {
-            resStrBattomTab.push(
-              <Grid item key={uniqid()} xs={xss} sx={styleXX}>
-                <Button sx={styleXXX} onClick={() => handleClickBattomTab(i, j)}></Button>
-              </Grid>,
-            );
-          }
-        }
-      }
-    }
-    return resStrBattomTab;
-  };
-
-  const OutputNormalBattom = () => {
-    return (
-      <Box sx={{ marginTop: -2.5, fontSize: fSize }}>
-        <Grid item container xs={12}>
-          {HeaderBattomTab()}
-          {StrokaBattomTabMaxMin('Tmax', 'Normal')}
-          {StrokaBattomTabMaxMin('Tmin', 'Normal')}
-        </Grid>
-        <Box sx={{ height: '34.5vh', overflowX: 'auto' }}>
-          <Grid item container xs={12}>
-            {StrokaBattomTab('Normal')}
-            {/* {resStrBattomTab} */}
-          </Grid>
-        </Box>
-      </Box>
-    );
-  };
-
-  const OutputModalBattom = () => {
-    fSizeInp = 16;
-
-    return (
-      <Modal open={openSet} onClose={handleCloseSet}>
-        <Box sx={styleSet}>
-          <ModalEnd />
-          <Box sx={{ marginRight: 1, marginTop: -3 }}>
-            <Grid item container xs={12}>
-              {HeaderBattomTab()}
-              {StrokaBattomTabMaxMin('T max', 'Modal')}
-              {StrokaBattomTabMaxMin('T min', 'Modal')}
-            </Grid>
-            <Box sx={{ overflowX: 'auto', height: '69vh' }}>
-              <Grid item container xs={12}>
-                {StrokaBattomTab('Modal')}
-                {/* {resStrBattomTab} */}
-              </Grid>
-            </Box>
-          </Box>
-        </Box>
-      </Modal>
-    );
-  };
-
-  const AddNormalBattom = () => {
-    let colDirect = dateRpu.tirtonap.length;
-    let mass: Array<number> = [];
-    let maskTimetophases = {
-      nphase: 0,
-      tmax: 0,
-      tmin: 0,
-    };
-    for (let i = 0; i < colDirect; i++) {
-      mass[i] = 0;
-    }
-    massFaza.push(mass);
-    maskTimetophases.nphase = kolFaz + 1;
-    dateRpu.timetophases.push(maskTimetophases);
-  };
-
-  const DelNormalBattom = () => {
-    let nomRecord = kolFaz - 1;
-    const HandleCloseDel = (val: number) => {
-      if (val === 1) {
-        dateRpu.timetophases.pop();
-        massFaza.splice(nomRecord, 1);
-      }
-      setOpenSet(false);
-    };
-
-    return (
-      <>
-        {kolFaz > 0 && (
-          <Modal open={openSet} onClose={handleCloseSet}>
-            <Box sx={styleSetDirect}>
-              <Button sx={styleModalEndDir} onClick={handleCloseSetBut}>
-                <b>&#10006;</b>
-              </Button>
-              <Stack direction="column">
-                <Typography variant="h6" sx={{ textAlign: 'center', color: '#5B1080' }}>
-                  Удаление фазы №{dateRpu.timetophases[nomRecord].nphase}
-                  <br />
-                  Вы уверены в этом?
-                </Typography>
-                <Stack direction="row">
-                  <Button
-                    sx={styleButtDirect}
-                    variant="contained"
-                    onClick={() => HandleCloseDel(1)}>
-                    Да
-                  </Button>
-                  <Grid item xs></Grid>
-                  <Button
-                    sx={styleButtDirect}
-                    variant="contained"
-                    onClick={() => HandleCloseDel(2)}>
-                    Нет
-                  </Button>
-                </Stack>
-              </Stack>
-            </Box>
-          </Modal>
-        )}
-      </>
-    );
-  };
-
-  const BattomTab = () => {
-    return (
-      <TabContext value={valueTC}>
-        <Box>
-          <Button sx={styleButtBox} variant="contained" onClick={() => handleOpenModal('69')}>
-            <b>Привязка фаз</b>
-          </Button>
-          <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('61')}>
-            <b>+</b>
-          </Button>
-          <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('62')}>
-            <b>-</b>
-          </Button>
-          <OutputNormalBattom />
-          <TabPanel value="69">
-            <OutputModalBattom />
-          </TabPanel>
-          {/* <TabPanel value="61"> обработка в handleOpenModal */}
-          <TabPanel value="62">
-            <DelNormalBattom />
-          </TabPanel>
-        </Box>
-      </TabContext>
-    );
-  };
-
   //== Common ======================================
 
   const [open, setOpen] = React.useState(false);
@@ -772,14 +498,9 @@ const BindDirections = (props: any) => {
   };
 
   const handleOpenModal = (nom: string) => {
-    if (nom === '61') {
-      AddNormalBattom();
-      setSize(window.innerWidth + Math.random());
-    } else {
-      setOpenSet(true);
-      setValueTC(nom);
-      setOpen(true);
-    }
+    setOpenSet(true);
+    setValueTC(nom);
+    setOpen(true);
   };
 
   const ModalEnd = () => {
@@ -802,6 +523,7 @@ const BindDirections = (props: any) => {
   };
 
   //отслеживание изменения размера экрана
+  const [size, setSize] = React.useState(window.innerWidth);
   React.useLayoutEffect(() => {
     function updateSize() {
       setSize(window.innerWidth);
@@ -811,41 +533,31 @@ const BindDirections = (props: any) => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  const BindLeft = () => {
-    return (
-      <Grid item xs={9}>
-        <Stack direction="column">
-          <Grid container sx={styleBox}>
-            <Grid item xs={12} sx={{ border: 0, fontSize: fSize, height: '45.6vh' }}>
-              <TopTab />
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs sx={{ height: '0.4vh' }}></Grid>
-          </Grid>
-          <Grid container sx={styleBox}>
-            <Grid item xs sx={{ border: 0, height: '45.3vh' }}>
-              <BattomTab />
-            </Grid>
-          </Grid>
-        </Stack>
-      </Grid>
-    );
-  };
-
   return (
-    <Box sx={{ marginTop: -3, marginLeft: -3, marginRight: -3 }}>
-      <Grid container>
-        <Grid item xs={12}>
-          <Grid container sx={{ border: 0, height: '93vh' }}>
-            <BindLeft />
-            <Grid item xs={0.05}></Grid>
-            <BindRight />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Box>
+    <TabContext value={valueTC}>
+      <Box sx={{ border: 0 }}>
+        <Button sx={styleButtBox} variant="contained" onClick={() => handleOpenModal('33')}>
+          <b>Привязка выходов</b>
+        </Button>
+        <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('34')}>
+          <b>+</b>
+        </Button>
+        <Button sx={stylePlusMinus} variant="contained" onClick={() => handleOpenModal('35')}>
+          <b>-</b>
+        </Button>
+        <OutputNormalTop />
+        <TabPanel value="33">
+          <OutputModalTop />
+        </TabPanel>
+        <TabPanel value="34">
+          <AddNormalTop />
+        </TabPanel>
+        <TabPanel value="35">
+          <DelNormalTop />
+        </TabPanel>
+      </Box>
+    </TabContext>
   );
 };
 
-export default BindDirections;
+export default BindDirectionsTop;
