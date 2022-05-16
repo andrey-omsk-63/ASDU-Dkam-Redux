@@ -40,9 +40,7 @@ export const dataRpu = {
       green: 3,
       yellow: 2,
       counter: 1,
-      reds: [
-        12
-      ],
+      reds: [12],
     },
     {
       num: 2,
@@ -50,59 +48,49 @@ export const dataRpu = {
       green: 6,
       yellow: 5,
       counter: 2,
-      reds: [
-        4
-      ],
+      reds: [4],
     },
     {
       num: 3,
       type: 1,
       green: 11,
       yellow: 10,
-      reds: [
-        9
-     ]
+      reds: [9],
     },
     {
       num: 4,
       type: 2,
       green: 12,
       yellow: 0,
-      reds: []
+      reds: [],
     },
     {
       num: 5,
       type: 2,
       green: 13,
       yellow: 0,
-      reds: []
+      reds: [],
     },
     {
       num: 6,
       type: 1,
       green: 16,
       yellow: 15,
-      reds: [
-        14
-     ]
+      reds: [14],
     },
     {
       num: 7,
       type: 3,
       green: 18,
       yellow: 0,
-      reds: [
-        17
-     ]
+      reds: [17],
     },
     {
       num: 8,
       type: 3,
       green: 20,
       yellow: 0,
-      reds: [
-        19
-     ]
+      reds: [19],
     },
   ],
   counts: [

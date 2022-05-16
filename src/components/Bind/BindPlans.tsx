@@ -11,11 +11,12 @@ import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import BindRight from './BindComponents/BindRight';
 
 import { styleBox, styleButtBox, styleXTG021 } from './BindComponents/BindPlansStyle';
-import { styleXTG03, } from './BindComponents/BindPlansStyle';
+import { styleXTG03 } from './BindComponents/BindPlansStyle';
 
 import { DateRPU } from './../../interfaceRPU.d';
 
@@ -24,6 +25,7 @@ let massFaza: Array<Array<number>> = [[]];
 
 let flagInitial = true;
 let massPlan: Array<number> = [];
+let crossPlan = 0;
 
 const BindPlans = (props: any) => {
   //== Piece of Redux ======================================
@@ -41,11 +43,11 @@ const BindPlans = (props: any) => {
   //const dispatch = useDispatch();
   dateRpu = comm.dateRpu;
   massFaza = massfaz;
-  //======================================================== 
+  //========================================================
 
   if (flagInitial) {
     for (let i = 0; i < dateRpu.rpus.length; i++) {
-      massPlan.push(dateRpu.rpus[i].number)
+      massPlan.push(dateRpu.rpus[i].number);
     }
     flagInitial = false;
   }
@@ -231,34 +233,28 @@ const BindPlans = (props: any) => {
 
   const styleModalEnd = {
     position: 'absolute',
-    maxWidth: '3vh',
-    minWidth: '3vh',
-    maxHeight: '16px',
-    minHeight: '16px',
-    backgroundColor: 'fff',
-    top: '0.5%',
-    left: '88%',
+    top: '0%',
+    left: 'auto',
+    right: '-14%',
+    maxHeight: '21px',
+    minHeight: '21px',
+    width: '6%',
     fontSize: 15,
     color: 'black',
   };
 
-
-
   const [open, setOpen] = React.useState(false);
-  const [crossData, setCrossData] = React.useState(0);
+  //const [crossPlan, setCrossPlan] = React.useState(0);
 
   const handleOpen = () => setOpen(true);
 
   const handleClose = (numer: number) => {
+    // 777 - выход
     if (numer !== 777) {
-      setCrossData(numer);
-      setValue('1');
-      // extData =
-      //   points[numer].slice(11, 13) +
-      //   '.' +
-      //   points[numer].slice(8, 10) +
-      //   '.' +
-      //   points[numer].slice(3, 7);
+      // 121 - новый план
+      if (numer !== 121) {
+        crossPlan = numer + 1;
+      }
     }
     setOpen(false);
   };
@@ -266,7 +262,6 @@ const BindPlans = (props: any) => {
   const SpisPlan = () => {
     let resStr = [];
     let stroka = '';
-
 
     resStr.push(
       <Button key={777} sx={styleModalEnd} onClick={() => handleClose(777)}>
@@ -277,11 +272,7 @@ const BindPlans = (props: any) => {
       for (let i = 0; i < massPlan.length; i++) {
         stroka = 'План  ' + massPlan[i];
         resStr.push(
-          <Button
-            key={i}
-            sx={styleModalMenu}
-            variant="contained"
-            onClick={() => handleClose(i)}>
+          <Button key={i} sx={styleModalMenu} variant="contained" onClick={() => handleClose(i)}>
             <b>{stroka}</b>
           </Button>,
         );
@@ -289,32 +280,40 @@ const BindPlans = (props: any) => {
     }
     resStr.push(
       <Button key={121} sx={styleModalMenu} variant="contained" onClick={() => handleClose(121)}>
-        <b>Новый план</b>
+        Новый план
       </Button>,
     );
 
     return resStr;
   };
 
-  const InpPlan = () => {
+  const InputPlan = () => {
     return (
       <>
         <Button sx={styleApp01} variant="contained" onClick={handleOpen}>
           <b>Выбор плана</b>
         </Button>
         <Modal open={open}>
-          <Box sx={styleModal}>
-            {/* <Stack direction="column"> */}
-              {/* <Box sx={{ overflowX: 'auto', height: '82vh' }}> */}
-              {/* <Box > */}
-                {SpisPlan()}
-              {/* </Box> */}
-            {/* </Stack> */}
-          </Box>
+          <Box sx={styleModal}>{SpisPlan()}</Box>
         </Modal>
       </>
     );
-  }
+  };
+
+  const OutputPlan = () => {
+    let plan = 'План ' + massPlan[crossPlan - 1];
+    return (
+      <>
+        {crossPlan !== 0 && (
+          <>
+            <Typography variant="h6" sx={{ color: '#5B1080' }}>
+              {plan}
+            </Typography>
+          </>
+        )}
+      </>
+    );
+  };
 
   const TopTabInput = () => {
     const styleBoxForm = {
@@ -323,12 +322,19 @@ const BindPlans = (props: any) => {
 
     return (
       <>
-        <Grid container sx={{ marginTop: '6vh', height: '9vh' }}>
-          <Grid item xs={6}>
-            <InpPlan />
-            {/* <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
-              {InpForm(0)}
-            </Box> */}
+        <Grid container sx={{ border: 0, marginTop: '6vh', height: '6vh' }}>
+          <Grid item xs={6} sx={{ textAlign: 'center' }}>
+            <InputPlan />
+          </Grid>
+          {/* <Grid item xs={6} sx={{ border: 0 }}>
+            <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
+              {InpForm(1)}
+            </Box>
+          </Grid> */}
+        </Grid>
+        <Grid container sx={{ border: 0, height: '6vh' }}>
+          <Grid item xs={6} sx={{ textAlign: 'center' }}>
+            <OutputPlan />
           </Grid>
           <Grid item xs={6} sx={{ border: 0 }}>
             <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
@@ -336,14 +342,6 @@ const BindPlans = (props: any) => {
             </Box>
           </Grid>
         </Grid>
-        {/* <Grid container sx={{ height: '3vh' }}>
-          <Grid item xs={3.5}></Grid>
-          <Grid item xs>
-            <Button sx={styleButtInp} variant="contained">
-              <b>Создать план</b>
-            </Button>
-          </Grid>
-        </Grid> */}
       </>
     );
   };
