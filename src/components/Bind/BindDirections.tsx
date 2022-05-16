@@ -48,8 +48,7 @@ const BindDirections = (props: any) => {
   //const dispatch = useDispatch();
   dateRpu = comm.dateRpu;
   massFaza = massfaz;
-  //======================================================
-
+  //========================================================
   let kolFaz = dateRpu.timetophases.length;
   const [size, setSize] = React.useState(0);
 
@@ -57,11 +56,9 @@ const BindDirections = (props: any) => {
   let styleSetWidth = 650;
   if (sizeGl > 770) styleSetWidth = sizeGl - 50;
   let fSize = ((sizeGl - 700) * 3.5) / 450 + 10.5;
-
   let widthButtBatt = (sizeGl / (kolFaz + 1) - 5).toString() + 'px';
   let heightButtBatt = '6vh';
   let fSizeInp = 10.5;
-
   let xss = 11.25 / kolFaz;
   let xsss = 0.75;
   let napr = '';
@@ -85,9 +82,7 @@ const BindDirections = (props: any) => {
     paddingRight: 3,
     paddingTop: 3,
   };
-
   //== Common ======================================
-
   const ReadNapravlenie = (i: number) => {
     switch (dateRpu.tirtonap[i].type) {
       case 1:
@@ -180,9 +175,8 @@ const BindDirections = (props: any) => {
       if (valueInp > maxi) valueInp = maxi;
       if (valueInp < 0) valueInp = 0;
       if (event.target.value === '') valueInp = 0;
-      valueInp = Number(valueInp);
       setValuen(valueInp);
-      RecordInDateRpu(i, numCol, valueInp);
+      RecordInDateRpu(i, numCol, Number(valueInp));
     };
 
     const handleKey = (event: any) => {
@@ -205,9 +199,7 @@ const BindDirections = (props: any) => {
       </Grid>
     );
   };
-
   //== TopTab =======================================
-
   const HeaderTopTab = () => {
     const ElemHeader = (xss: number, elem: string, styleXX: any) => {
       return (
@@ -259,7 +251,6 @@ const BindDirections = (props: any) => {
 
   const StrokaTopTabNormal = (i: number) => {
     let begin = dateRpu.tirtonap[i].num + napr;
-
     return (
       <Grid container key={i}>
         {OutputTopTab(begin, styleXTG03)}
@@ -287,7 +278,6 @@ const BindDirections = (props: any) => {
   const StrokaTopTabModal = (i: number) => {
     let begin = dateRpu.tirtonap[i].num + napr;
     xsss = 0.75;
-
     return (
       <Grid container key={i}>
         {OutputTopTab(begin, styleXTG03)}
@@ -314,7 +304,6 @@ const BindDirections = (props: any) => {
 
   const MassTopTab = (mode: string) => {
     let resStr = [];
-
     for (let i = 0; i < dateRpu.tirtonap.length; i++) {
       ReadNapravlenie(i);
       if (mode === 'Normal') {
@@ -502,9 +491,7 @@ const BindDirections = (props: any) => {
       </TabContext>
     );
   };
-
   //== BattomTab =======================================
-
   const HeaderBattomTab = () => {
     let resStrHeaderBattomTab = [];
     resStrHeaderBattomTab.push(
@@ -527,7 +514,6 @@ const BindDirections = (props: any) => {
   const StrokaBattomTabMaxMin = (titl: string, mode: string) => {
     let resStr: any = [];
     xsss = xss;
-
     if (kolFaz > 0) {
       resStr.push(
         <Grid item key={uniqid()} xs={0.75} sx={styleXTG030}>
@@ -588,7 +574,6 @@ const BindDirections = (props: any) => {
     resStrBattomTab = [];
     let styleXX = styleXTG0341;
     let styleXXX = styleButtBattGreen;
-
     if (kolFaz > 0) {
       for (let j = 0; j < dateRpu.tirtonap.length; j++) {
         ReadNapravlenie(j);
@@ -636,7 +621,6 @@ const BindDirections = (props: any) => {
 
   const OutputModalBattom = () => {
     fSizeInp = 16;
-
     return (
       <Modal open={openSet} onClose={handleCloseSet}>
         <Box sx={styleSet}>
@@ -800,7 +784,6 @@ const BindDirections = (props: any) => {
   const handleCloseSetBut = () => {
     setOpenSet(false);
   };
-
   //отслеживание изменения размера экрана
   React.useLayoutEffect(() => {
     function updateSize() {

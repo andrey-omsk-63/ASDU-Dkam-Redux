@@ -212,14 +212,14 @@ export const styleModalEndDir = {
   maxHeight: '21px',
   minHeight: '21px',
   width: '6%',
-  fontSize: 16,
+  //fontSize: 16,
   color: 'black',
 };
 
 export const styleSetDirect = {
   position: 'absolute',
-  marginTop: '5vh',
-  marginLeft: '5vh',
+  marginTop: '15vh',
+  marginLeft: '24vh',
   width: 200,
   bgcolor: 'background.paper',
   border: '3px solid #000',

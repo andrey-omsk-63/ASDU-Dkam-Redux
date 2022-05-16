@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 
-import axios from 'axios';
+//import axios from 'axios';
 
 import Condition from './components/Condition';
 import Technology from './components/Technology';
@@ -24,7 +24,7 @@ import { styleAppMenu, styleAppPodv, styleButt01 } from './AppStyle';
 import { styleTitle, styleButt02 } from './AppStyle';
 
 import { DateRPU } from './interfaceRPU.d';
-//import { dataRpu } from './otladkaRpuData';
+import { dataRpu } from './otladkaRpuData';
 
 import AppIconAsdu from './AppIconAsdu';
 
@@ -50,7 +50,6 @@ const App = () => {
 
   const dispatch = useDispatch();
   //========================================================
-
   const ButtonKnobLevel1 = (soob: string, val: string) => {
     return (
       <Grid container>
@@ -78,29 +77,41 @@ const App = () => {
 
   const [pointsRpu, setPointsRpu] = React.useState<DateRPU>({} as DateRPU);
   const [isOpenRpu, setIsOpenRpu] = React.useState(false);
-  const ipAdress: string = 'http://localhost:3000/otladkaRpu.json';
+  //const ipAdress: string = 'http://localhost:3000/otladkaRpu.json';
   //const ipAdress: string = 'http://192.168.115.114:3000/otladkaRpu.json';
 
-  React.useEffect(() => {
-    axios.get(ipAdress).then(({ data }) => {
-      setPointsRpu(data);
-      setIsOpenRpu(true);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   axios.get(ipAdress).then(({ data }) => {
+  //     setPointsRpu(data);
+  //     setIsOpenRpu(true);
+  //   });
+  // }, []);
+
+  if (flagOpenRpu) {                // костыль для отладки на планшете
+    setPointsRpu(dataRpu);
+    setIsOpenRpu(true);
+  }
 
   if (isOpenRpu && flagOpenRpu) {
     dateRpuGl = pointsRpu;
-    dispatch(commCreate(pointsRpu));
+
+    // входящий контроль pointsRpu
+    for (let i = 0; i < dateRpuGl.tirtonap.length; i++) {
+      let massRab = [0, 0, 0];
+      for (let j = 0; j < dateRpuGl.tirtonap[i].reds.length; j++) {
+        massRab[j] = dateRpuGl.tirtonap[i].reds[j]
+      }
+      dateRpuGl.tirtonap[i].reds = massRab
+    }
+    dispatch(commCreate(dateRpuGl));
 
     // инициализация massFaza
     let kolFaz = dateRpuGl.timetophases.length;
     massFaz = Array.from({ length: kolFaz }, () =>
       Array.from({ length: dateRpuGl.tirtonap.length }, () => 0),
     );
-    // i - столбец
-    for (let i = 0; i < kolFaz; i++) {
-      // j - строка
-      for (let j = 0; j < dateRpuGl.tirtonap.length; j++) {
+    for (let i = 0; i < kolFaz; i++) {                        // i - столбец
+      for (let j = 0; j < dateRpuGl.tirtonap.length; j++) {   // j - строка
         if (dateRpuGl.naptoph[i].naps.includes(j + 1)) {
           massFaz[i][j] = j + 1;
         }

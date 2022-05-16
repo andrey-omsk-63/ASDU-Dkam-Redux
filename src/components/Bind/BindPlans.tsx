@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 
 //import { useDispatch, useSelector } from 'react-redux';
-//import { inputText } from './../../redux/actions';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,20 +14,41 @@ import TextField from '@mui/material/TextField';
 
 import BindRight from './BindComponents/BindRight';
 
-//let flagInput = false;
+import { styleBox, styleButtBox, styleXTG021 } from './BindComponents/BindPlansStyle';
+import { styleXTG03, } from './BindComponents/BindPlansStyle';
+
+import { DateRPU } from './../../interfaceRPU.d';
+
+let dateRpu: DateRPU;
+let massFaza: Array<Array<number>> = [[]];
+
+let flagInitial = true;
+let massPlan: Array<number> = [];
 
 const BindPlans = (props: any) => {
-  console.log('BindPlans - props:', props);
-
   //== Piece of Redux ======================================
-  // const text = useSelector((state) => {
-  //   console.log('state >>> ', state);
-  //   //const { inputReducer } = state;
-  //   //return inputReducer.text;
-  // });
+  const comm = useSelector((state: any) => {
+    const { commReducer } = state;
+    return commReducer.comm;
+  });
 
-  // const dispatch = useDispatch();
-  //========================================================
+  const massfaz = useSelector((state: any) => {
+    const { massfazReducer } = state;
+    return massfazReducer.massfaz;
+  });
+  //console.log('massfazDirect:', massfaz);
+
+  //const dispatch = useDispatch();
+  dateRpu = comm.dateRpu;
+  massFaza = massfaz;
+  //======================================================== 
+
+  if (flagInitial) {
+    for (let i = 0; i < dateRpu.rpus.length; i++) {
+      massPlan.push(dateRpu.rpus[i].number)
+    }
+    flagInitial = false;
+  }
 
   const [size, setSize] = React.useState(0);
   let formSett = ['План 0(РП)', 0];
@@ -38,26 +59,7 @@ const BindPlans = (props: any) => {
   if (size > 770) styleSetWidth = size - 50;
   if (size > 860) fSize = 13.5;
 
-  const styleBox = {
-    border: 1,
-    borderRadius: 1,
-    backgroundColor: 'white',
-    borderColor: 'primary.main',
-  };
-
-  const styleButtBox = {
-    fontSize: 19,
-    maxHeight: '21px',
-    minHeight: '21px',
-    marginTop: '-0.8vh',
-    //marginTop: '-52.5vh',
-    backgroundColor: 'white',
-    color: '#5B1080',
-    textTransform: 'unset !important',
-  };
-
   const styleButtInp = {
-    //fontSize: 12,
     fontSize: fSize + 1,
     maxHeight: '21px',
     minHeight: '21px',
@@ -65,21 +67,6 @@ const BindPlans = (props: any) => {
     backgroundColor: 'white',
     color: 'black',
     textTransform: 'unset !important',
-  };
-
-  const styleXTG021 = {
-    borderBottom: 1,
-    borderColor: 'primary.main',
-    textAlign: 'center',
-    backgroundColor: '#C0C0C0',
-    padding: 0.7,
-  };
-
-  const styleXTG03 = {
-    borderRight: 1,
-    borderBottom: 1,
-    borderColor: 'primary.main',
-    padding: 0.9,
   };
 
   const styleSet = {
@@ -147,7 +134,7 @@ const BindPlans = (props: any) => {
     return (
       <Box sx={{ border: 0, marginTop: 0, fontSize: fSize }}>
         <HeaderBattomTab />
-        <Box sx={{ border: 0, height: '59.5vh', overflowX: 'auto' }}>{StrokaBattomTab()}</Box>
+        <Box sx={{ border: 0, height: '60.5vh', overflowX: 'auto' }}>{StrokaBattomTab()}</Box>
       </Box>
     );
   };
@@ -203,6 +190,132 @@ const BindPlans = (props: any) => {
     );
   };
 
+  const styleApp01 = {
+    fontSize: 14.5,
+    marginRight: 0.5,
+    marginLeft: 0.1,
+    maxWidth: '18vh',
+    minWidth: '18vh',
+    maxHeight: '24px',
+    minHeight: '24px',
+    backgroundColor: '#F1F3F4',
+    color: 'black',
+    textTransform: 'unset !important',
+  };
+
+  const styleModal = {
+    position: 'absolute',
+    marginLeft: '12vh',
+    marginTop: '6vh',
+    //transform: 'translate(-50%, -50%)',
+    width: 145,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    borderColor: 'primary.main',
+    borderRadius: 2,
+    boxShadow: 24,
+    paddingTop: 2,
+    paddingLeft: 2,
+  };
+
+  const styleModalMenu = {
+    fontSize: 17,
+    maxHeight: '21px',
+    minHeight: '21px',
+    backgroundColor: '#F1F3F4',
+    color: 'black',
+    marginRight: 1,
+    marginBottom: 2,
+    textTransform: 'unset !important',
+  };
+
+  const styleModalEnd = {
+    position: 'absolute',
+    maxWidth: '3vh',
+    minWidth: '3vh',
+    maxHeight: '16px',
+    minHeight: '16px',
+    backgroundColor: 'fff',
+    top: '0.5%',
+    left: '88%',
+    fontSize: 15,
+    color: 'black',
+  };
+
+
+
+  const [open, setOpen] = React.useState(false);
+  const [crossData, setCrossData] = React.useState(0);
+
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = (numer: number) => {
+    if (numer !== 777) {
+      setCrossData(numer);
+      setValue('1');
+      // extData =
+      //   points[numer].slice(11, 13) +
+      //   '.' +
+      //   points[numer].slice(8, 10) +
+      //   '.' +
+      //   points[numer].slice(3, 7);
+    }
+    setOpen(false);
+  };
+
+  const SpisPlan = () => {
+    let resStr = [];
+    let stroka = '';
+
+
+    resStr.push(
+      <Button key={777} sx={styleModalEnd} onClick={() => handleClose(777)}>
+        <b>&#10006;</b>
+      </Button>,
+    );
+    if (!flagInitial) {
+      for (let i = 0; i < massPlan.length; i++) {
+        stroka = 'План  ' + massPlan[i];
+        resStr.push(
+          <Button
+            key={i}
+            sx={styleModalMenu}
+            variant="contained"
+            onClick={() => handleClose(i)}>
+            <b>{stroka}</b>
+          </Button>,
+        );
+      }
+    }
+    resStr.push(
+      <Button key={121} sx={styleModalMenu} variant="contained" onClick={() => handleClose(121)}>
+        <b>Новый план</b>
+      </Button>,
+    );
+
+    return resStr;
+  };
+
+  const InpPlan = () => {
+    return (
+      <>
+        <Button sx={styleApp01} variant="contained" onClick={handleOpen}>
+          <b>Выбор плана</b>
+        </Button>
+        <Modal open={open}>
+          <Box sx={styleModal}>
+            {/* <Stack direction="column"> */}
+              {/* <Box sx={{ overflowX: 'auto', height: '82vh' }}> */}
+              {/* <Box > */}
+                {SpisPlan()}
+              {/* </Box> */}
+            {/* </Stack> */}
+          </Box>
+        </Modal>
+      </>
+    );
+  }
+
   const TopTabInput = () => {
     const styleBoxForm = {
       '& > :not(style)': { m: '1vh', width: '20ch' },
@@ -212,9 +325,10 @@ const BindPlans = (props: any) => {
       <>
         <Grid container sx={{ marginTop: '6vh', height: '9vh' }}>
           <Grid item xs={6}>
-            <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
+            <InpPlan />
+            {/* <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
               {InpForm(0)}
-            </Box>
+            </Box> */}
           </Grid>
           <Grid item xs={6} sx={{ border: 0 }}>
             <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
@@ -222,14 +336,14 @@ const BindPlans = (props: any) => {
             </Box>
           </Grid>
         </Grid>
-        <Grid container sx={{ height: '3vh' }}>
+        {/* <Grid container sx={{ height: '3vh' }}>
           <Grid item xs={3.5}></Grid>
           <Grid item xs>
             <Button sx={styleButtInp} variant="contained">
               <b>Создать план</b>
             </Button>
           </Grid>
-        </Grid>
+        </Grid> */}
       </>
     );
   };
@@ -305,12 +419,11 @@ const BindPlans = (props: any) => {
               <TopTabInput />
             </Grid>
           </Grid>
-
           <Grid container>
             <Grid item xs sx={{ height: '0.5vh' }}></Grid>
           </Grid>
           <Grid container sx={styleBox}>
-            <Grid item xs>
+            <Grid item xs sx={{ border: 0, height: '64.6vh' }}>
               <BattomTab />
             </Grid>
           </Grid>
