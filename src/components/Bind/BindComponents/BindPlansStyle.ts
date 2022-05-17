@@ -1,4 +1,3 @@
-
 export const styleBox = {
   border: 1,
   borderRadius: 1,
@@ -52,7 +51,7 @@ export const styleModalTime = {
   position: 'absolute',
   marginLeft: '33vh',
   marginTop: '6vh',
-  width: 100,
+  width: 120,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   borderColor: 'primary.main',
@@ -60,6 +59,21 @@ export const styleModalTime = {
   boxShadow: 24,
   paddingTop: 2,
   paddingLeft: 2,
+};
+
+export const styleModalTab = {
+  position: 'absolute',
+  marginLeft: '33vh',
+  marginTop: '12vh',
+  width: 190,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  borderColor: 'primary.main',
+  borderRadius: 2,
+  boxShadow: 24,
+  paddingTop: 2,
+  paddingLeft: 1,
+  //transform: 'translate(-50%, -50%)',
 };
 
 export const styleModalMenu = {
@@ -89,7 +103,7 @@ export const styleModalEnd = {
   position: 'absolute',
   top: '0%',
   left: 'auto',
-  right: '-14%',
+  right: '-12.5%',
   maxHeight: '21px',
   minHeight: '21px',
   width: '6%',
@@ -97,28 +111,14 @@ export const styleModalEnd = {
   color: 'black',
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const styleModalEndGl = {
+  position: 'absolute',
+  top: '0%',
+  left: 'auto',
+  right: '-2%',
+  maxHeight: '21px',
+  minHeight: '21px',
+  width: '6%',
+  fontSize: 19,
+  color: 'black',
+};

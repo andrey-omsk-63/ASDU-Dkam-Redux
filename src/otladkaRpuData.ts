@@ -182,7 +182,7 @@ export const dataRpu = {
     },
     {
       number: 2,
-      tcycle: 120,
+      tcycle: 125,
       cont: false,
       pahses: [
         {
@@ -215,7 +215,7 @@ export const dataRpu = {
         },
         {
           phase: 8,
-          time: 15,
+          time: 20,
         },
       ],
     },

@@ -18,6 +18,7 @@ import BindRight from './BindComponents/BindRight';
 import { styleBox, styleButtBox, styleXTG021 } from './BindComponents/BindPlansStyle';
 import { styleXTG03, styleModalPlan, styleModalTime } from './BindComponents/BindPlansStyle';
 import { styleModalMenu, styleModalMenuOk, styleModalEnd } from './BindComponents/BindPlansStyle';
+import { styleModalEndGl, styleModalTab } from './BindComponents/BindPlansStyle';
 
 import { DateRPU } from './../../interfaceRPU.d';
 
@@ -56,6 +57,7 @@ const BindPlans = (props: any) => {
   let fSize = 11;
   let styleSetWidth = 650;
   let maxWidthApp = '18vh';
+  let menuWidth = size / 12.5;
 
   if (size > 770) styleSetWidth = size - 50;
   if (size > 780) maxWidthApp = '24vh';
@@ -116,29 +118,64 @@ const BindPlans = (props: any) => {
   };
 
   const StrokaBattomTab = () => {
+    const styleModalMenuTab = {
+      fontSize: fSize,
+      maxHeight: '21px',
+      minHeight: '21px',
+      maxWidth: menuWidth,
+      minWidth: menuWidth,
+      backgroundColor: '#F1F3F4',
+      color: 'black',
+      textTransform: 'unset !important',
+    };
+
     let resStr = [];
     let timeOn = 0;
 
     for (let i = 0; i < dateRpu.rpus[crossPlan - 1].pahses.length; i++) {
       resStr.push(
-        <Grid key={Math.random()} container item xs={12}>
-          <Grid key={Math.random()} xs={2} item sx={styleXTG03}>
-            {i + 1}
+        <Grid key={i} container item xs={12}>
+          <Grid xs={2} item sx={styleXTG03}>
+            <Button sx={styleModalMenuTab} variant="contained" onClick={handleOpenTab}>
+              {i + 1}
+            </Button>
+            <Modal open={openTab} hideBackdrop>
+              <Box sx={styleModalTab}>
+                <Button sx={styleModalEnd} onClick={() => handleCloseTab(777)}>
+                  <b>&#10006;</b>
+                </Button>
+                <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTab(333)}>
+                  Удалить запись
+                </Button>
+                <Grid container>
+                  <Button
+                    sx={styleModalMenu}
+                    variant="contained"
+                    onClick={() => handleCloseTab(212)}>
+                    Добавить ДО
+                  </Button>
+                </Grid>
+
+                <Button variant="contained" sx={styleModalMenu} onClick={() => handleCloseTab(121)}>
+                  Добавить ПОСЛЕ
+                </Button>
+              </Box>
+            </Modal>
           </Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+          <Grid xs={1.9} item sx={styleXTG03}>
             {timeOn}
           </Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}></Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+          <Grid xs={1.9} item sx={styleXTG03}></Grid>
+          <Grid xs={1.9} item sx={styleXTG03}>
             {dateRpu.rpus[crossPlan - 1].pahses[i].phase}
           </Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+          <Grid xs={1.9} item sx={styleXTG03}>
             {dateRpu.rpus[crossPlan - 1].pahses[i].time}
           </Grid>
-          <Grid key={Math.random()} xs item sx={styleXTG03}></Grid>
+          <Grid xs item sx={styleXTG03}></Grid>
         </Grid>,
       );
-      timeOn = timeOn + dateRpu.rpus[crossPlan - 1].pahses[i].time
+      timeOn = timeOn + dateRpu.rpus[crossPlan - 1].pahses[i].time;
     }
     return resStr;
   };
@@ -153,12 +190,14 @@ const BindPlans = (props: any) => {
   };
 
   const OutputModalBattom = () => {
+    fSize = 18;
+    menuWidth = size / 7.5;
     return (
-      <Modal open={openSet} onClose={handleCloseSet}>
+      <Modal open={openSet} hideBackdrop onClose={handleCloseSet}>
         <Box sx={styleSet}>
           <ModalEnd />
           <Grid container>
-            <Grid item xs sx={{ marginRight: 1, marginTop: -3, fontSize: 18 }}>
+            <Grid item xs sx={{ marginRight: 1, marginTop: -3, fontSize: fSize }}>
               <Box sx={{ marginTop: -3 }}>
                 <TopTabInputOutput />
               </Box>
@@ -175,9 +214,11 @@ const BindPlans = (props: any) => {
 
   const [open, setOpen] = React.useState(false);
   const [openTime, setOpenTime] = React.useState(false);
+  const [openTab, setOpenTab] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleOpenTime = () => setOpenTime(true);
+  const handleOpenTab = () => setOpenTab(true);
 
   const handleClose = (numer: number) => {
     // 777 - выход
@@ -193,9 +234,15 @@ const BindPlans = (props: any) => {
   const handleCloseTime = (numer: number) => {
     // 777 - выход
     if (numer !== 777) {
-
     }
     setOpenTime(false);
+  };
+
+  const handleCloseTab = (numer: number) => {
+    // 777 - выход
+    if (numer !== 777) {
+    }
+    setOpenTab(false);
   };
 
   const SpisPlan = () => {
@@ -245,10 +292,10 @@ const BindPlans = (props: any) => {
         </Button>
         <Modal open={openTime}>
           <Box sx={styleModalTime}>
-            <Button key={777} sx={styleModalEnd} onClick={() => handleCloseTime(777)}>
+            <Button sx={styleModalEnd} onClick={() => handleCloseTime(777)}>
               <b>&#10006;</b>
             </Button>
-            <Typography key={100} variant="h6" sx={{ marginLeft: 2, marginBottom: 2, color: '#5B1080' }}>
+            <Typography variant="h6" sx={{ marginLeft: 2, marginBottom: 2, color: '#5B1080' }}>
               {massPlan[crossPlan - 1].tcycle}
             </Typography>
             <Grid container>
@@ -256,10 +303,10 @@ const BindPlans = (props: any) => {
                 ЖМ
               </Button>
             </Grid>
-            <Button key={333} sx={styleModalMenu} variant="contained" onClick={() => handleCloseTime(333)}>
+            <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTime(333)}>
               ОС
             </Button>
-            <Button key={101} sx={styleModalMenuOk} variant="contained" onClick={() => handleCloseTime(121)}>
+            <Button sx={styleModalMenuOk} variant="contained" onClick={() => handleCloseTime(121)}>
               Ввод
             </Button>
           </Box>
@@ -331,20 +378,8 @@ const BindPlans = (props: any) => {
   };
 
   const ModalEnd = () => {
-    const styleModalEnd = {
-      position: 'absolute',
-      top: '0%',
-      left: 'auto',
-      right: '-2%',
-      maxHeight: '21px',
-      minHeight: '21px',
-      width: '6%',
-      fontSize: 19,
-      color: 'black',
-    };
-
     return (
-      <Button sx={styleModalEnd} onClick={handleCloseSetBut}>
+      <Button sx={styleModalEndGl} onClick={handleCloseSetBut}>
         <b>&#10006;</b>
       </Button>
     );
