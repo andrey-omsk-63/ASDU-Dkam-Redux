@@ -43,8 +43,6 @@ const BindDirections = (props: any) => {
     const { massfazReducer } = state;
     return massfazReducer.massfaz;
   });
-  //console.log('massfazDirect:', massfaz);
-
   //const dispatch = useDispatch();
   dateRpu = comm.dateRpu;
   massFaza = massfaz;

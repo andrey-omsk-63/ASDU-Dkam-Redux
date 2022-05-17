@@ -32,4 +32,93 @@ export const styleXTG03 = {
   padding: 0.9,
 };
 
+//========================================================
+
+export const styleModalPlan = {
+  position: 'absolute',
+  marginLeft: '12vh',
+  marginTop: '6vh',
+  width: 145,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  borderColor: 'primary.main',
+  borderRadius: 2,
+  boxShadow: 24,
+  paddingTop: 2,
+  paddingLeft: 2,
+};
+
+export const styleModalTime = {
+  position: 'absolute',
+  marginLeft: '33vh',
+  marginTop: '6vh',
+  width: 100,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  borderColor: 'primary.main',
+  borderRadius: 2,
+  boxShadow: 24,
+  paddingTop: 2,
+  paddingLeft: 2,
+};
+
+export const styleModalMenu = {
+  fontSize: 17,
+  maxHeight: '21px',
+  minHeight: '21px',
+  backgroundColor: '#F1F3F4',
+  color: 'black',
+  marginRight: 1,
+  marginBottom: 3,
+  textTransform: 'unset !important',
+};
+
+export const styleModalMenuOk = {
+  fontSize: 17,
+  maxHeight: '21px',
+  minHeight: '21px',
+  backgroundColor: '#F1F3F4',
+  color: '#5B1080',
+  marginRight: 1,
+  marginBottom: 2,
+  textAlign: 'center',
+  textTransform: 'unset !important',
+};
+
+export const styleModalEnd = {
+  position: 'absolute',
+  top: '0%',
+  left: 'auto',
+  right: '-14%',
+  maxHeight: '21px',
+  minHeight: '21px',
+  width: '6%',
+  fontSize: 15,
+  color: 'black',
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

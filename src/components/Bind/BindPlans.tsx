@@ -10,22 +10,22 @@ import Stack from '@mui/material/Stack';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
+//import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import BindRight from './BindComponents/BindRight';
 
 import { styleBox, styleButtBox, styleXTG021 } from './BindComponents/BindPlansStyle';
-import { styleXTG03 } from './BindComponents/BindPlansStyle';
+import { styleXTG03, styleModalPlan, styleModalTime } from './BindComponents/BindPlansStyle';
+import { styleModalMenu, styleModalMenuOk, styleModalEnd } from './BindComponents/BindPlansStyle';
 
 import { DateRPU } from './../../interfaceRPU.d';
 
 let dateRpu: DateRPU;
-let massFaza: Array<Array<number>> = [[]];
 
 let flagInitial = true;
-let massPlan: Array<number> = [];
 let crossPlan = 0;
+let massPlan: any = [];
 
 const BindPlans = (props: any) => {
   //== Piece of Redux ======================================
@@ -33,43 +33,33 @@ const BindPlans = (props: any) => {
     const { commReducer } = state;
     return commReducer.comm;
   });
-
-  const massfaz = useSelector((state: any) => {
-    const { massfazReducer } = state;
-    return massfazReducer.massfaz;
-  });
-  //console.log('massfazDirect:', massfaz);
-
-  //const dispatch = useDispatch();
   dateRpu = comm.dateRpu;
-  massFaza = massfaz;
-  //========================================================
-
+  //== Инициализация =======================================
   if (flagInitial) {
     for (let i = 0; i < dateRpu.rpus.length; i++) {
-      massPlan.push(dateRpu.rpus[i].number);
+      let maskMassPlan = {
+        number: 0,
+        tcycle: 0,
+        jm: false,
+        oc: false,
+      };
+      maskMassPlan.number = dateRpu.rpus[i].number;
+      maskMassPlan.tcycle = dateRpu.rpus[i].tcycle;
+      massPlan.push(maskMassPlan);
     }
+    if (dateRpu.rpus.length > 0) crossPlan = 1;
     flagInitial = false;
   }
-
+  //========================================================
   const [size, setSize] = React.useState(0);
-  let formSett = ['План 0(РП)', 0];
 
   let fSize = 11;
   let styleSetWidth = 650;
+  let maxWidthApp = '18vh';
 
   if (size > 770) styleSetWidth = size - 50;
+  if (size > 780) maxWidthApp = '24vh';
   if (size > 860) fSize = 13.5;
-
-  const styleButtInp = {
-    fontSize: fSize + 1,
-    maxHeight: '21px',
-    minHeight: '21px',
-    marginBottom: 1.5,
-    backgroundColor: 'white',
-    color: 'black',
-    textTransform: 'unset !important',
-  };
 
   const styleSet = {
     position: 'absolute',
@@ -83,6 +73,19 @@ const BindPlans = (props: any) => {
     boxShadow: 24,
     paddingRight: 3,
     paddingTop: 3,
+  };
+
+  const styleInpPlanTime = {
+    fontSize: 15.3,
+    marginRight: 0.5,
+    marginLeft: 0.1,
+    maxWidth: maxWidthApp,
+    minWidth: maxWidthApp,
+    maxHeight: '24px',
+    minHeight: '24px',
+    backgroundColor: '#F1F3F4',
+    color: 'black',
+    textTransform: 'unset !important',
   };
 
   const HeaderBattomTab = () => {
@@ -114,20 +117,28 @@ const BindPlans = (props: any) => {
 
   const StrokaBattomTab = () => {
     let resStr = [];
+    let timeOn = 0;
 
-    for (let i = 0; i < 27; i++) {
+    for (let i = 0; i < dateRpu.rpus[crossPlan - 1].pahses.length; i++) {
       resStr.push(
         <Grid key={Math.random()} container item xs={12}>
           <Grid key={Math.random()} xs={2} item sx={styleXTG03}>
             {i + 1}
           </Grid>
+          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+            {timeOn}
+          </Grid>
           <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}></Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}></Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}></Grid>
-          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}></Grid>
+          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+            {dateRpu.rpus[crossPlan - 1].pahses[i].phase}
+          </Grid>
+          <Grid key={Math.random()} xs={1.9} item sx={styleXTG03}>
+            {dateRpu.rpus[crossPlan - 1].pahses[i].time}
+          </Grid>
           <Grid key={Math.random()} xs item sx={styleXTG03}></Grid>
         </Grid>,
       );
+      timeOn = timeOn + dateRpu.rpus[crossPlan - 1].pahses[i].time
     }
     return resStr;
   };
@@ -149,7 +160,7 @@ const BindPlans = (props: any) => {
           <Grid container>
             <Grid item xs sx={{ marginRight: 1, marginTop: -3, fontSize: 18 }}>
               <Box sx={{ marginTop: -3 }}>
-                <TopTabInput />
+                <TopTabInputOutput />
               </Box>
               <Box sx={{ marginTop: 2 }}>
                 <HeaderBattomTab />
@@ -162,91 +173,11 @@ const BindPlans = (props: any) => {
     );
   };
 
-  const InpForm = (nom: number) => {
-    let labelTextField = 'Номер плана:';
-    if (nom > 0) labelTextField = 'Время цикла, сек:';
-    const [valuen, setValuen] = React.useState(formSett[nom]);
-
-    const handleChange = (event: any) => {
-      setValuen(event.target.value);
-      formSett[nom] = event.target.value;
-      //console.log('handle text >>', event.target.value);
-      //dispatch(inputText(event.target.value));
-    };
-
-    const handleKey = (event: any) => {
-      if (event.key === 'Enter') event.preventDefault();
-    };
-
-    return (
-      <TextField
-        size="small"
-        onKeyPress={handleKey} //отключение Enter
-        label={labelTextField}
-        inputProps={{ style: { fontSize: fSize } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: fSize } }} // font size of input label
-        value={valuen}
-        onChange={handleChange}
-        variant="outlined"
-      />
-    );
-  };
-
-  const styleApp01 = {
-    fontSize: 14.5,
-    marginRight: 0.5,
-    marginLeft: 0.1,
-    maxWidth: '18vh',
-    minWidth: '18vh',
-    maxHeight: '24px',
-    minHeight: '24px',
-    backgroundColor: '#F1F3F4',
-    color: 'black',
-    textTransform: 'unset !important',
-  };
-
-  const styleModal = {
-    position: 'absolute',
-    marginLeft: '12vh',
-    marginTop: '6vh',
-    //transform: 'translate(-50%, -50%)',
-    width: 145,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    borderColor: 'primary.main',
-    borderRadius: 2,
-    boxShadow: 24,
-    paddingTop: 2,
-    paddingLeft: 2,
-  };
-
-  const styleModalMenu = {
-    fontSize: 17,
-    maxHeight: '21px',
-    minHeight: '21px',
-    backgroundColor: '#F1F3F4',
-    color: 'black',
-    marginRight: 1,
-    marginBottom: 2,
-    textTransform: 'unset !important',
-  };
-
-  const styleModalEnd = {
-    position: 'absolute',
-    top: '0%',
-    left: 'auto',
-    right: '-14%',
-    maxHeight: '21px',
-    minHeight: '21px',
-    width: '6%',
-    fontSize: 15,
-    color: 'black',
-  };
-
   const [open, setOpen] = React.useState(false);
-  //const [crossPlan, setCrossPlan] = React.useState(0);
+  const [openTime, setOpenTime] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
+  const handleOpenTime = () => setOpenTime(true);
 
   const handleClose = (numer: number) => {
     // 777 - выход
@@ -259,6 +190,14 @@ const BindPlans = (props: any) => {
     setOpen(false);
   };
 
+  const handleCloseTime = (numer: number) => {
+    // 777 - выход
+    if (numer !== 777) {
+
+    }
+    setOpenTime(false);
+  };
+
   const SpisPlan = () => {
     let resStr = [];
     let stroka = '';
@@ -268,15 +207,13 @@ const BindPlans = (props: any) => {
         <b>&#10006;</b>
       </Button>,
     );
-    if (!flagInitial) {
-      for (let i = 0; i < massPlan.length; i++) {
-        stroka = 'План  ' + massPlan[i];
-        resStr.push(
-          <Button key={i} sx={styleModalMenu} variant="contained" onClick={() => handleClose(i)}>
-            <b>{stroka}</b>
-          </Button>,
-        );
-      }
+    for (let i = 0; i < massPlan.length; i++) {
+      stroka = 'План  ' + massPlan[i].number;
+      resStr.push(
+        <Button key={i} sx={styleModalMenu} variant="contained" onClick={() => handleClose(i)}>
+          <b>{stroka}</b>
+        </Button>,
+      );
     }
     resStr.push(
       <Button key={121} sx={styleModalMenu} variant="contained" onClick={() => handleClose(121)}>
@@ -290,57 +227,86 @@ const BindPlans = (props: any) => {
   const InputPlan = () => {
     return (
       <>
-        <Button sx={styleApp01} variant="contained" onClick={handleOpen}>
+        <Button sx={styleInpPlanTime} variant="contained" onClick={handleOpen}>
           <b>Выбор плана</b>
         </Button>
         <Modal open={open}>
-          <Box sx={styleModal}>{SpisPlan()}</Box>
+          <Box sx={styleModalPlan}>{SpisPlan()}</Box>
         </Modal>
       </>
     );
   };
 
-  const OutputPlan = () => {
-    let plan = 'План ' + massPlan[crossPlan - 1];
+  const InputTime = () => {
+    return (
+      <>
+        <Button sx={styleInpPlanTime} variant="contained" onClick={handleOpenTime}>
+          <b>Время цикла, сек:</b>
+        </Button>
+        <Modal open={openTime}>
+          <Box sx={styleModalTime}>
+            <Button key={777} sx={styleModalEnd} onClick={() => handleCloseTime(777)}>
+              <b>&#10006;</b>
+            </Button>
+            <Typography key={100} variant="h6" sx={{ marginLeft: 2, marginBottom: 2, color: '#5B1080' }}>
+              {massPlan[crossPlan - 1].tcycle}
+            </Typography>
+            <Grid container>
+              <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTime(212)}>
+                ЖМ
+              </Button>
+            </Grid>
+            <Button key={333} sx={styleModalMenu} variant="contained" onClick={() => handleCloseTime(333)}>
+              ОС
+            </Button>
+            <Button key={101} sx={styleModalMenuOk} variant="contained" onClick={() => handleCloseTime(121)}>
+              Ввод
+            </Button>
+          </Box>
+        </Modal>
+      </>
+    );
+  };
+
+  const OutputPlanTime = () => {
+    let plan = '';
+    if (crossPlan !== 0) {
+      plan = 'План ' + massPlan[crossPlan - 1].number;
+    }
+
     return (
       <>
         {crossPlan !== 0 && (
           <>
-            <Typography variant="h6" sx={{ color: '#5B1080' }}>
-              {plan}
-            </Typography>
+            <Grid item xs={6} sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ color: '#5B1080' }}>
+                {plan}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ color: '#5B1080' }}>
+                {massPlan[crossPlan - 1].tcycle}
+              </Typography>
+            </Grid>
           </>
         )}
       </>
     );
   };
 
-  const TopTabInput = () => {
-    const styleBoxForm = {
-      '& > :not(style)': { m: '1vh', width: '20ch' },
-    };
-
+  const TopTabInputOutput = () => {
     return (
       <>
         <Grid container sx={{ border: 0, marginTop: '6vh', height: '6vh' }}>
           <Grid item xs={6} sx={{ textAlign: 'center' }}>
             <InputPlan />
           </Grid>
-          {/* <Grid item xs={6} sx={{ border: 0 }}>
-            <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
-              {InpForm(1)}
-            </Box>
-          </Grid> */}
+          <Grid item xs={6} sx={{ textAlign: 'center' }}>
+            <InputTime />
+          </Grid>
         </Grid>
         <Grid container sx={{ border: 0, height: '6vh' }}>
-          <Grid item xs={6} sx={{ textAlign: 'center' }}>
-            <OutputPlan />
-          </Grid>
-          <Grid item xs={6} sx={{ border: 0 }}>
-            <Box component="form" sx={styleBoxForm} noValidate autoComplete="off">
-              {InpForm(1)}
-            </Box>
-          </Grid>
+          <OutputPlanTime />
         </Grid>
       </>
     );
@@ -414,7 +380,7 @@ const BindPlans = (props: any) => {
               <b>Планы</b>
             </Button>
             <Grid item xs={12} sx={{ height: '24.4vh' }}>
-              <TopTabInput />
+              <TopTabInputOutput />
             </Grid>
           </Grid>
           <Grid container>
