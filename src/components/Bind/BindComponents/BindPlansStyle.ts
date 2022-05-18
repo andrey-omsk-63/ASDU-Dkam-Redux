@@ -35,8 +35,10 @@ export const styleXTG03 = {
 
 export const styleModalPlan = {
   position: 'absolute',
-  marginLeft: '12vh',
-  marginTop: '6vh',
+  //marginLeft: '12vh',
+  //marginTop: '6vh',
+  marginLeft: window.innerWidth / 50,
+  marginTop: window.innerHeight / 50,
   width: 145,
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -49,8 +51,10 @@ export const styleModalPlan = {
 
 export const styleModalTime = {
   position: 'absolute',
-  marginLeft: '33vh',
-  marginTop: '6vh',
+  // marginLeft: '33vh',
+  // marginTop: '6vh',
+  marginLeft: window.innerWidth / 18,
+  marginTop: window.innerHeight / 50,
   width: 120,
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -63,8 +67,10 @@ export const styleModalTime = {
 
 export const styleModalTab = {
   position: 'absolute',
-  marginLeft: '33vh',
-  marginTop: '12vh',
+  //marginLeft: '33vh',
+  marginLeft: window.innerWidth / 50,
+  //marginTop: '9vh',
+  marginTop: window.innerHeight / 50,
   width: 190,
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -73,7 +79,6 @@ export const styleModalTab = {
   boxShadow: 24,
   paddingTop: 2,
   paddingLeft: 1,
-  //transform: 'translate(-50%, -50%)',
 };
 
 export const styleModalMenu = {
@@ -122,3 +127,12 @@ export const styleModalEndGl = {
   fontSize: 19,
   color: 'black',
 };
+
+
+
+
+
+
+
+
+

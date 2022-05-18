@@ -117,6 +117,29 @@ const BindPlans = (props: any) => {
     );
   };
 
+  const InpDelRecords = () => {
+    return (
+      <Modal open={openTab} hideBackdrop>
+        <Box sx={styleModalTab}>
+          <Button sx={styleModalEnd} onClick={() => handleCloseTab(777)}>
+            <b>&#10006;</b>
+          </Button>
+          <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTab(333)}>
+            Удалить запись
+          </Button>
+          <Grid container>
+            <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTab(212)}>
+              Добавить ДО
+            </Button>
+          </Grid>
+          <Button variant="contained" sx={styleModalMenu} onClick={() => handleCloseTab(121)}>
+            Добавить ПОСЛЕ
+          </Button>
+        </Box>
+      </Modal>
+    )
+  }
+
   const StrokaBattomTab = () => {
     const styleModalMenuTab = {
       fontSize: fSize,
@@ -139,28 +162,7 @@ const BindPlans = (props: any) => {
             <Button sx={styleModalMenuTab} variant="contained" onClick={handleOpenTab}>
               {i + 1}
             </Button>
-            <Modal open={openTab} hideBackdrop>
-              <Box sx={styleModalTab}>
-                <Button sx={styleModalEnd} onClick={() => handleCloseTab(777)}>
-                  <b>&#10006;</b>
-                </Button>
-                <Button sx={styleModalMenu} variant="contained" onClick={() => handleCloseTab(333)}>
-                  Удалить запись
-                </Button>
-                <Grid container>
-                  <Button
-                    sx={styleModalMenu}
-                    variant="contained"
-                    onClick={() => handleCloseTab(212)}>
-                    Добавить ДО
-                  </Button>
-                </Grid>
-
-                <Button variant="contained" sx={styleModalMenu} onClick={() => handleCloseTab(121)}>
-                  Добавить ПОСЛЕ
-                </Button>
-              </Box>
-            </Modal>
+            <InpDelRecords />
           </Grid>
           <Grid xs={1.9} item sx={styleXTG03}>
             {timeOn}
@@ -307,7 +309,7 @@ const BindPlans = (props: any) => {
               ОС
             </Button>
             <Button sx={styleModalMenuOk} variant="contained" onClick={() => handleCloseTime(121)}>
-              Ввод
+              ЛПУ
             </Button>
           </Box>
         </Modal>
